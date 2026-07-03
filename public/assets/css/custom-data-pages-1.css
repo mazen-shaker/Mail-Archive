@@ -1,0 +1,191 @@
+/*------------------------------------------------------------------
+[Custom Stylesheet - LTR Version]
+
+Project        :   Dashboard Data Styling
+File Name      :   data-tables-v1-ltr.css
+Version        :   1.0
+Create Date    :   29/10/2025
+Author         :   Mazen Mohamed
+Description    :   LTR custom styles for data tables, buttons, and search inputs.
+-------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+# TABLE OF CONTENTS
+-----------------------------------------------------------------
+1. GLOBAL LTR FIX
+2. SEARCH INPUT
+3. BUTTONS WRAPPER (.btns)
+4. BUTTONS STYLES (.btns a)
+5. ICON BUTTONS (DELETE / EDIT)
+-----------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+1. GLOBAL LTR FIX
+-----------------------------------------------------------------*/
+
+body {
+	direction: ltr;
+	text-align: left;
+	font-family: "Cairo", sans-serif;
+}
+
+/*--------------------------------------------------------------
+2. SEARCH INPUT
+-----------------------------------------------------------------*/
+
+.search {
+	outline: none;
+	margin: 0;
+	border: solid 0.8px rgba(206, 206, 206, 0.505);
+	border-radius: 7px;
+	height: 30px;
+	padding-left: 10px; /* لأن النص إنجليزي */
+}
+
+.search::placeholder {
+	padding-right: 10px;
+	color: rgba(167, 167, 167, 0.618);
+	font-family: "Cairo", sans-serif;
+	text-align: left;
+}
+
+.search:focus {
+	outline: solid 0.8px rgba(173, 216, 230, 0.614);
+	margin: 0;
+	border: solid 0px rgba(206, 206, 206, 0.505);
+	border-radius: 7px;
+	height: 30px;
+}
+
+/*--------------------------------------------------------------
+3. BUTTONS WRAPPER (.btns)
+-----------------------------------------------------------------*/
+
+.btns {
+	background-color: rgb(56, 56, 224);
+	height: fit-content;
+	padding: 10px;
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	justify-content: flex-start; /* علشان الأزرار تبدأ من الشمال */
+}
+
+/*--------------------------------------------------------------
+4. BUTTONS STYLES (.btns a)
+-----------------------------------------------------------------*/
+
+.btns a {
+	text-decoration: none;
+	font-family: "Cairo", sans-serif;
+	color: white;
+	padding: 10px;
+	background-color: rgb(56, 56, 224);
+	transition: all 0.2s ease-in-out;
+}
+
+.btns a:hover {
+	color: rgb(232, 232, 232);
+	background-color: rgb(46, 46, 184);
+	text-decoration: none;
+}
+
+/*--------------------------------------------------------------
+5. ICON BUTTONS (DELETE / EDIT)
+-----------------------------------------------------------------*/
+
+.del-btn {
+	color: rgb(197, 25, 25);
+	transition: color 0.2s ease-in-out;
+}
+
+.edit-btn {
+	color: rgb(190, 190, 38);
+	transition: color 0.2s ease-in-out;
+}
+
+.del-btn:hover {
+	color: rgb(218, 19, 19);
+}
+
+.edit-btn:hover {
+	color: rgb(224, 224, 34);
+}
+
+/*--------------------------------------------------------------
+6. MODEL FORM GROUP (.model-form-group)
+-----------------------------------------------------------------*/
+
+.model-form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+
+/*--------------------------------------------------------------
+7. SELECT2 CUSTOM SEARCH INPUT
+-----------------------------------------------------------------*/
+
+/* الـ input اللي جواه البحث */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+	border: 1px solid #dcdcdc;
+	border-radius: 6px;
+	padding: 6px 10px;
+	font-family: "Cairo", sans-serif;
+	font-size: 14px;
+	transition: all 0.2s ease-in-out;
+	outline: none;
+	box-shadow: none;
+	width: 100%;
+}
+
+/* لما المستخدم يبدأ يكتب */
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+	border-color: #6b8cff;
+	box-shadow: 0 0 3px rgba(107, 140, 255, 0.4);
+}
+
+/* بوكس النتائج */
+.select2-container--default .select2-results > .select2-results__options {
+	max-height: 180px;
+	overflow-y: auto;
+	border-top: 1px solid #eee;
+	scrollbar-width: thin;
+}
+
+/* شكل السليكت نفسه */
+.select2-container--default .select2-selection--single {
+	border-radius: 8px;
+	border: 1px solid #d1d1d1;
+	height: 38px;
+	display: flex;
+	align-items: center;
+	padding: 4px 10px;
+	font-family: "Cairo", sans-serif;
+	font-size: 14px;
+	color: #333;
+	transition: all 0.2s ease-in-out;
+}
+
+/* لما يتفتح */
+.select2-container--open .select2-selection--single {
+	border-color: #6b8cff;
+	box-shadow: 0 0 3px rgba(107, 140, 255, 0.3);
+}
+
+/* Placeholder text */
+.select2-selection__placeholder {
+	color: #a0a0a0;
+}
+
+/* results hover */
+.select2-results__option--highlighted {
+	background-color: #6b8cff !important;
+	color: white !important;
+}
+
+/*------------------------------------------------------------------
+# END OF FILE
+------------------------------------------------------------------*/
