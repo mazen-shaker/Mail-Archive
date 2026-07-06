@@ -12,7 +12,7 @@
         "laravel/framework": "^13.0",
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^3.0",
-        "maatwebsite/excel": "^3.1",
+        "openspout/openspout": "^5.7",
         "predis/predis": "^3.4",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",

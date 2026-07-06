@@ -30,7 +30,7 @@ class MailService extends BaseService
 
     $data = $request->toArray();
 
-    $data['file_type'] = $file->getMimeType();
+    $data['file_type'] = $file->getMimeType();    
     $data['file_path'] = $path;
     $data['writed_by'] = Auth::user()->name;
     $data['mail_status_id'] = MailStatusEnum::NOTPUBLISHED->value;
@@ -183,7 +183,7 @@ public function searchDB($search, array $columns)
             
             $q->orWhereHas('entity', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");
-            });
+            });  
             
             $q->orWhereHas('status', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%");

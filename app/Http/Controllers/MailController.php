@@ -19,7 +19,7 @@ class MailController extends Controller
     protected $service;
     protected $request;
 
-    public function __construct(MailService $service, Request $request)
+    public function __construct(MailService $service, Request $request)   
     {
         $this->service = $service;
     
