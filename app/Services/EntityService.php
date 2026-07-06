@@ -12,9 +12,9 @@ class EntityService extends BaseService
 {
     protected $model;
     protected $importClass = EntitiesImport::class; 
-    protected $fileService = FileService::class; 
+    protected $fileService = new FileService::class; 
 
     public function __construct(Entity $model){$this->model = $model;}
   
-    public function import($request) {return $this->fileService::importExcel($request, $this->importClass,);}     
+    public function import($request) {return $this->fileService->importExcel($request, $this->importClass,);}     
 }

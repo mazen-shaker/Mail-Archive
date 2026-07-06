@@ -10,6 +10,12 @@ use App\Models\MailStatus;
 use App\Models\MailPrivacy;
 use App\Models\MailDepartment;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class Mail extends Model
 {
@@ -37,6 +43,8 @@ protected $fillable = [
     public function status() { return $this->belongsTo(MailStatus::class, 'mail_status_id'); }
     public function privacy() { return $this->belongsTo(MailPrivacy::class, 'mail_privacy_id'); }
     public function mailDepartment() { return $this->hasMany(MailDepartment::class); }
+
+    protected static function booted(){static::addGlobalScope('ownedMails', function ($builder){$builder->where(function ($query) {$query->where('department_id', Auth::user()->department_id)->orWhere('writed_by', Auth::user()->id);});});}
 
 
 }

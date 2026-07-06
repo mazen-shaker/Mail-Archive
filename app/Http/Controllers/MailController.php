@@ -19,120 +19,43 @@ class MailController extends Controller
     protected $service;
     protected $request;
 
-    public function __construct(MailService $service, Request $request)   
-    {
-        $this->service = $service;
-    
-        $this->request = $request;  
-    }
+    public function __construct(MailService $service, Request $request){$this->service = $service; $this->request = $request;}
     
 
   
-    public function index()
-    {
-    
-    $mails = Mail::hydrate($this->service->getCachedData('mails'));
-    if(Auth::user()->role_id !== 1){ 
-    
-    $mails = Mail::hydrate($this->service->getCachedData('mails'))->filter(function ($mail) {
-        return $mail->department_id == Auth::user()->department_id
-            && $mail->department_id !== null || $mail->writed_by === Auth::user()->name;
-    });}
-    $privacies = MailPrivacy::hydrate($this->service->getCachedData('privacies'));
-    $entities = Entity::hydrate($this->service->getCachedData('entities'));
-    $departments = Department::hydrate($this->service->getCachedData('departments'));
-    return view('mails.index', compact(['mails','privacies','entities','departments']));
-
-    }
+    public function index(){$data = $this->service->index(); $mails = $data['mails']; $privacies = $data['privacies'];
+    $entities = $data['entities']; $departments = $data['departments']; return view('mails.index', compact(['mails','privacies','entities','departments']));}
    
-    public function store(StoreMailRequest $request)
-    {
-        $this->service->storeMail($request);
-        Cache::tags(['mails'])->flush();
-        return redirect()->route('mail.index');
-    }
+
+    public function store(StoreMailRequest $request){$this->service->store($request); return redirect()->route('mail.index');}
 
 
-    public function update(UpdateMailRequest $request)
-    {
-        $this->service->update($request->validated()['id'], $request->validated());
-        Cache::tags(['mails'])->flush();
-        return redirect()->route('mail.index');
-    }          
-
-        public function share()
-    {   
-        $request = $this->request;
-        $this->service->share($request->id, $request);
-        Cache::tags(['mails'])->flush();
-        return redirect()->route('mail.index');
-    }  
-
-    public function destroy($id)
-    {
-        $this->service->destroy($id);
-        Cache::tags(['mails'])->flush();
-        return redirect()->route('mail.index');
-    }
-
-    public function archive($id)
-    {
-        $this->service->archive($id);
-        Cache::tags(['mails'])->flush();
-        return redirect()->route('mail.index');
-    }
-
-    public function destroyAll(Request $request)
-    {
-        $this->service->deleteMultiple($request->ids);
-        Cache::tags(['mails'])->flush();
-        return redirect()->route('mail.index');
-    }
-
-    public function archiveAll(Request $request)
-    {
-        $this->service->archiveMultiple($request->ids);
-        Cache::tags(['mails'])->flush();
-        return redirect()->route('mail.index');
-    }
-
-        public function preView($id)
-    {
-       return $this->service->preViewFile($id);
-    }
+    public function update(UpdateMailRequest $request){$this->service->update($request->validated()['id'], $request->validated()); return redirect()->route('mail.index');}          
 
 
-    public function sign($id)
-    {
-       $data = $this->service->editor($id);
-       $file = $data['file'];
-       $signatures = $data['signatures'];
-       $fileUrl = $data['fileUrl'];
-       return view('mails.sign', compact(['file','signatures','fileUrl']));
-
-    }
+    public function share(){$request = $this->request; $this->service->share($request->id, $request); return redirect()->route('mail.index');}  
 
 
-        public function saveEditor(Request $request, $id)
-    {
-        return $this->service->saveEditor($request, $id);
-         
-    }
-public function search()
+    public function destroy($id){$this->service->destroy($id); return redirect()->route('mail.index');}
 
-{
 
-$cachedData = Mail::hydrate($this->service->getCachedData('mails'));
+    public function archive($id){$this->service->archive($id); return redirect()->route('mail.index');}
 
-$columns = ['title','description','writed_by','entity.name','user.name','status.name','privacy.name'];
 
-$search = $this->request->search;
+    public function destroyAll(Request $request){$this->service->deleteMultiple($request->ids); return redirect()->route('mail.index');}
 
-$results = $this->service->search($search,$columns,$cachedData);
 
-return response()->json($results);
+    public function archiveAll(Request $request){$this->service->archiveMultiple($request->ids); return redirect()->route('mail.index');}
 
-}
+
+    public function preView($id){return $this->service->preViewFile($id);}  
+
+
+    public function sign($id){$data = $this->service->editor($id); $file = $data['file']; $signatures = $data['signatures'];
+    $fileUrl = $data['fileUrl']; return view('mails.sign', compact(['file','signatures','fileUrl']));}
+
+
+    public function saveEditor(Request $request, $id){return $this->service->saveEditor($request, $id);}
 
 
 }    

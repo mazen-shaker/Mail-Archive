@@ -29,6 +29,6 @@ class DepartmentController extends Controller
 
     public function archiveAll(){$this->service->archiveMultiple($this->request->ids); return redirect()->route('department.index');}
 
-    public function import(){$this->service->import($this->request); return redirect()->route('department.index');}
+    public function import(){$this->service->import($this->request()); return redirect()->route('department.index');}
 
 }  
