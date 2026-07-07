@@ -1,10 +1,7 @@
 <?php
 
 namespace App\Services;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use App\Models\Entity;
 use App\Models\Mail;
 use App\Models\User;
 use App\Models\Sign;
@@ -13,70 +10,16 @@ use App\Models\MailPrivacy;
 use App\Models\Department;
 use App\Models\UserStatus;
 
-class BaseService
+class CacheService
 {
-    protected $model;
-   
+public static function bootCache(){Cache::tags(['privacies','departments','signs','roles', 'usersStatuses'])->flush(); Cache::tags('privacies')->rememberForever('privacies', fn() => MailPrivacy::all()->toArray()); 
+Cache::tags('usersStatuses')->rememberForever('usersStatuses', fn() => UserStatus::all()->toArray()); Cache::tags('departments')->rememberForever('departments', fn() => Department::all()->toArray());
+Cache::tags('signs')->rememberForever('signs', fn() => Sign::all()->toArray()); Cache::tags('roles')->rememberForever('roles', fn() => Role::all()->toArray());}
 
-    public function getCachedData(string $type)
-{
-    $userId = auth()->id();
+public static function resetCache(string $type, $model = null){Cache::tags($type)->flush(); Cache::tags($type)->rememberForever($type, fn() => $model::all()->toArray());}
 
-    return Cache::tags([$type])->rememberForever($type . '_user_' . $userId, function () use ($type) {
+public static function flushAllCache(string $type){Cache::tags(['privacies','departments','signs','roles', 'usersStatuses'])->flush();}
 
-        return match ($type) {
-        'mails' => Mail::all()->toArray(),
-        'privacies' => MailPrivacy::all()->toArray(),
-        'departments' => Department::all()->toArray(),
-        'entities' => Entity::all()->toArray(),
-        'users' => User::all()->toArray(),
-        'signs' => Sign::all()->toArray(),
-        'roles' => Role::all()->toArray(),
-        'usersStatuses' => UserStatus::all()->toArray(),
-        default => [],
-        };
-
-    });
+public static function getCache(string $type, $model = null){$data = Cache::tags($type)->get($type); if (!$data) return collect(); return $model ? $model::hydrate($data) : collect($data);}
 }
-
-
-
-    public function store($data)
-    {
-        return $this->model->create($data);
-    }
-
-
-
-    public function update($id, $data)
-    {
-        $record = $this->model->findOrFail($id);
-        $record->update($data);
-        return $record;
-    }
-
-
-    public function destroy($id)
-    {
-        return $this->model->destroy($id);
-    }
-
-    public function archive($id)
-    {  
-        $record = $this->model->findOrFail($id);
-        return $record->delete();
-    }
-
-    public function deleteMultiple($ids)
-    {
-        return $this->model->whereIn('id', $ids)->forceDelete();
-    }
-
-    public function archiveMultiple($ids)
-    {
-        return $this->model->whereIn('id', $ids)->delete();
-    }
-
-
-       
-}
+  

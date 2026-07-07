@@ -4,20 +4,23 @@ namespace App\Services;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Models\Sign;
-use App\Models\User;
+use App\Models\User; 
+use App\Services\FileService;
+use App\Service\CacheService;
 
 class SignService extends BaseService
 {
     protected $model;
 
-    protected $fileService = new FileService::class; 
+    protected $fileService; 
+    protected $lowService;
 
-    public function __construct(Sign $model){$this->model = $model;} 
+    public function __construct(Sign $model,FileService $fileService,){$this->model = $model; $this->fileService = $fileService;} 
     
-    public function index(){$signs = $this->model->paginate(10); $users = User::all(); return ['signs' => $signs,'users' => $users,];}
+    public function index(){$signs = CacheService::getCache('signs', $this->model); $users = User::all(); return ['signs' => $signs,'users' => $users,];}
     
     public function prosessFile($request) {return $this->fileService->prosessFile($request);}     
 
     public function preViewFile($id){$this->fileService->preViewFile($id);}
 }  
-         
+           
