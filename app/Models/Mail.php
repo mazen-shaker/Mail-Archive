@@ -11,12 +11,12 @@ use App\Models\MailPrivacy;
 use App\Models\MailDepartment;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\Searchable;
 
 
-
+  
 class Mail extends Model
 {
 
@@ -35,7 +35,7 @@ protected $fillable = [
 
 
     /** @use HasFactory<\Database\Factories\MailFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable;
 
     public function user() { return $this->belongsTo(User::class); }
     public function department() { return $this->belongsTo(Department::class); }

@@ -17,4 +17,7 @@ class EntityService extends BaseService
     public function __construct(FileService $fileService, Entity $model){$this->model = $model; $this->fileService = $fileService;}
   
     public function import($request) {return $this->fileService->importExcel($request, $this->importClass,);}     
+
+    public function search($search){$columns = ['name']; return $this->model->search($search,$columns);}
+
 }

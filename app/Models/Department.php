@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Mail;
 use App\Models\MailDepartment;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Searchable;
 
 class Department extends Model
 {
@@ -16,11 +17,10 @@ protected $fillable = [
     'name',
     'code',
 ];
-
+  
 
     /** @use HasFactory<\Database\Factories\DepartmentFactory> */
-    use HasFactory;
-    use SoftDeletes, SoftDeletes;
+    use SoftDeletes, SoftDeletes, HasFactory, Searchable;
 
 
     public function user() { return $this->hasMany(User::class); }

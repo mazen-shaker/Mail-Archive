@@ -59,4 +59,7 @@ class RegisteredUserController extends Controller
 
     public function archiveAll(Request $request) {$this->service->archiveMultiple($request->ids); return redirect()->route('user.index');}
 
+
+    public function search(){$results = $this->service->search($this->request->search); return response()->json($results);}
+
 }

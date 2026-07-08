@@ -50,12 +50,13 @@ class MailController extends Controller
 
     public function preView($id){return $this->service->preViewFile($id);}  
 
-
+  
     public function sign($id){$data = $this->service->editor($id); $file = $data['file']; $signatures = $data['signatures'];
     $fileUrl = $data['fileUrl']; return view('mails.sign', compact(['file','signatures','fileUrl']));}
 
 
     public function saveEditor(Request $request, $id){return $this->service->saveEditor($request, $id);}
 
-
+    
+    public function search(){$results = $this->service->search($this->request->search); return response()->json($results);}
 }    

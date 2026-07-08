@@ -31,4 +31,6 @@ class EntityController extends Controller
     public function archiveAll(){$this->service->archiveMultiple($this->request->ids); return redirect()->route('entity.index');}
 
     public function import() {$this->service->import($this->request); return redirect()->route('entity.index');}
+
+    public function search(){$results = $this->service->search($this->request->search); return response()->json($results);}
 }

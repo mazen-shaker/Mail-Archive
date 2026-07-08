@@ -72,7 +72,6 @@
 <tr>
 <th><input type='checkbox' id='selectAll' style="margin-top:10px;"></th>
 <th>اسم التوقيع</th>
-<th>المستخدم</th>
 <th>العمليات</th>
 </tr>
 </thead>
@@ -82,7 +81,6 @@
 <tr id="row-{{ $item->id }}">
 <td><input type='checkbox' class="selectItem" name="ids[]" form="selectedGroub" value='{{ $item->id }}'></td>
 <td>{{ $item->name }}</td>
-<td>{{ $item->user->name ?? '' }}</td>
 <td>
 <a class="btn btn-sm btn-success viewBtn" href="{{ route('sign.preview', $item->id) }}"><i class="fa fa-eye"></i></a>
 <button class="btn btn-sm btn-info editBtn"

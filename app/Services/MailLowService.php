@@ -8,15 +8,17 @@ use App\Enums\MailStatusEnum;
 use App\Models\Mail;
 use App\Models\MailPrivacy;
 use App\Models\Sign;
+use App\Models\Entity;
+use App\Models\Department;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;  
-use App\Service\CacheService;
+use App\Services\CacheService;
 
 
 class MailLowService
 {
 
-    public function index($model){$mails = $model->paginate(10); $privacies = CacheService::getCache('privacies', 'MailPrivacy');; 
+    public function index($model){$mails = $model->paginate(10); $privacies = CacheService::getCache('privacies', MailPrivacy::class); 
     $entities = Entity::all(); $departments = Department::all(); return ['mails' => $mails,'privacies' => $privacies,'entities' => $entities,'departments' => $departments];}
     
     

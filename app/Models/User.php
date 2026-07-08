@@ -15,6 +15,7 @@ use App\Models\UserStatus;
 use App\Models\Mail;
 use App\Models\Sign;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Searchable;
 
 
 #[Fillable(['name', 'email', 'password',
@@ -27,7 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, Searchable;
 
 
     /**

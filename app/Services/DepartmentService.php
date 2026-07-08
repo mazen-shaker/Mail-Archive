@@ -4,7 +4,7 @@ namespace App\Services;
 use App\Imports\DepartmentsImport;
 use App\Services\FileService;
 use App\Models\Department;
-use App\Service\CacheService;
+use App\Services\CacheService;
  
 class DepartmentService extends BaseService
 {
@@ -17,5 +17,7 @@ class DepartmentService extends BaseService
     public function index(){return CacheService::getCache('departments', $this->model);}
 
     public function import($request) {return $this->fileService->importExcel($request, $this->importClass,);}     
+
+    public function search($search){$columns = ['name','code']; return $this->model->search($search,$columns);}
 }  
    

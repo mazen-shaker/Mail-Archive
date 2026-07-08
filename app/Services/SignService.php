@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Sign;
 use App\Models\User; 
 use App\Services\FileService;
-use App\Service\CacheService;
+use App\Services\CacheService;
 
 class SignService extends BaseService
 {
@@ -22,5 +22,7 @@ class SignService extends BaseService
     public function prosessFile($request) {return $this->fileService->prosessFile($request);}     
 
     public function preViewFile($id){$this->fileService->preViewFile($id);}
+
+    public function search($search){$columns = ['name']; return $this->model->search($search,$columns);}
 }  
            

@@ -9,8 +9,8 @@ use App\Models\Role;
 use App\Models\MailPrivacy;
 use App\Models\Department;
 use App\Models\UserStatus;
-
-class CacheService
+  
+class CacheService  
 {
 public static function bootCache(){Cache::tags(['privacies','departments','signs','roles', 'usersStatuses'])->flush(); Cache::tags('privacies')->rememberForever('privacies', fn() => MailPrivacy::all()->toArray()); 
 Cache::tags('usersStatuses')->rememberForever('usersStatuses', fn() => UserStatus::all()->toArray()); Cache::tags('departments')->rememberForever('departments', fn() => Department::all()->toArray());

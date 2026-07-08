@@ -19,10 +19,10 @@ class MailService extends BaseService
     protected $fileService;
     protected $lowService;  
 
-    public function __construct(Mail $model, FileService $fileService, MailLowService $lowService){$this->model = $model;$this->fileService = $fileService; $this->lowService = $lowService} 
+    public function __construct(Mail $model, FileService $fileService, MailLowService $lowService){$this->model = $model;$this->fileService = $fileService; $this->lowService = $lowService;} 
 
 
-    public function index(){$this->lowService->index($this->model);}
+    public function index(){ return $this->lowService->index($this->model);}
     
 
 
@@ -43,6 +43,9 @@ class MailService extends BaseService
 
 
     public function saveEditor($request, $id){$this->lowService->saveEditor($this->model,$request,$id);}
+
+
+    public function search($search){$columns = ['title','description', 'writed_by', 'user.name', 'department.name', 'entity.name', 'status.name', 'privacy.name']; $relations = ['user','department','entity','status','privacy']; return $this->model->search($search,$columns,$relations);}
 }
     
        
