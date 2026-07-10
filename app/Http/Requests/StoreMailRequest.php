@@ -22,7 +22,7 @@ class StoreMailRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'required|string',
             'entity_id' => 'required',
-            'mail_privacy_id' => 'required',
+            // 'mail_privacy_id' => 'required',
             'file' => 'required',
             ];
     }
@@ -35,7 +35,7 @@ class StoreMailRequest extends FormRequest
         'description.required' => 'يجب ملأ حقل الوصف ',  
         'description.string' => 'الوصف جب ان يكون نص',  
         'entity_id.required' => 'يجب تحديد الجهه المرسله',
-        'mail_privacy_id.required' => 'يجب تحديد الخصوصيه',
+      // 'mail_privacy_id.required' => 'يجب تحديد الخصوصيه',
         'file.required' => 'يجب رفع الجواب',
         ];
     }

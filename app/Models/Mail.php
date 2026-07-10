@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\Searchable;
+use App\Models\Inbox;
+use App\Models\MailOwner;
 
 
   
@@ -37,14 +39,17 @@ protected $fillable = [
     /** @use HasFactory<\Database\Factories\MailFactory> */
     use HasFactory, SoftDeletes, Searchable;
 
-    public function user() { return $this->belongsTo(User::class); }
+    // public function user() { return $this->belongsTo(User::class); }
     public function department() { return $this->belongsTo(Department::class); }
     public function entity() { return $this->belongsTo(Entity::class); }
     public function status() { return $this->belongsTo(MailStatus::class, 'mail_status_id'); }
     public function privacy() { return $this->belongsTo(MailPrivacy::class, 'mail_privacy_id'); }
     public function mailDepartment() { return $this->hasMany(MailDepartment::class); }
+    public function inbox() { return $this->hasMany(Inbox::class); }
+    public function owner() { return $this->hasMany(MailOwner::class); }
 
-    protected static function booted(){static::addGlobalScope('ownedMails', function ($builder){$builder->where(function ($query) {$query->where('department_id', Auth::user()->department_id)->orWhere('writed_by', Auth::user()->id);});});}
+    protected static function booted(){static::addGlobalScope('ownedMails', function ($builder) {if (!Auth::check()) {return;}$builder->where(function ($query) {$query->whereHas('inbox', function ($q) {$q->where('department_id', Auth::user()->department_id);})->orWhereHas('owner', function ($q) {$q->where('user_id', Auth::id());});});});}
 
 
 }
+  

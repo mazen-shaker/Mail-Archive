@@ -16,6 +16,8 @@ use App\Models\Mail;
 use App\Models\Sign;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Searchable;
+use App\Models\Inbox;
+use App\Models\MailOwner;
 
 
 #[Fillable(['name', 'email', 'password',
@@ -49,6 +51,7 @@ class User extends Authenticatable
     public function status() { return $this->belongsTo(UserStatus::class, 'user_status_id'); }
     public function mail() { return $this->hasMany(Mail::class); }
     public function sign() { return $this->hasMany(Sign::class); }
-
+    public function inbox() { return $this->hasMany(Inbox::class); }
+    public function owner() { return $this->hasMany(MailOwner::class); }
 
 }

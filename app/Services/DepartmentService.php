@@ -20,4 +20,4 @@ class DepartmentService extends BaseService
 
     public function search($search){$columns = ['name','code']; return $this->model->search($search,$columns);}
 }  
-   
+     

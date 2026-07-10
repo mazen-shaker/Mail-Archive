@@ -30,7 +30,7 @@ class MailService extends BaseService
 
 
 
-    public function preViewFile($id){$this->fileService->preViewFile($id);}
+    public function preViewFile($id){return $this->fileService->preViewFile($id, $this->model);}
 
 
 
@@ -38,11 +38,11 @@ class MailService extends BaseService
 
 
 
-    public function editor($id){$this->lowService->editor($this->model,$id);}
+    public function editor($id){return $this->lowService->editor($this->model,$id);}
 
 
 
-    public function saveEditor($request, $id){$this->lowService->saveEditor($this->model,$request,$id);}
+    public function saveEditor($request, $id){ return $this->lowService->saveEditor($this->model,$request,$id);}
 
 
     public function search($search){$columns = ['title','description', 'writed_by', 'user.name', 'department.name', 'entity.name', 'status.name', 'privacy.name']; $relations = ['user','department','entity','status','privacy']; return $this->model->search($search,$columns,$relations);}

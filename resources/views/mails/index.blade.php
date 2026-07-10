@@ -25,7 +25,7 @@
 <div class="form-group"><label>العنوان</label><input type="text" name="title" id="add_title" class="form-control" required></div>
 <div class="form-group"><label>الوصف</label><textarea name="description" id="add_description" class="form-control"></textarea></div>
 
-<div class="form-group"><label>الجهه</label>
+<div class="form-group"><label>الجهه المصدره</label>
 <select name="entity_id" id="add_entity_id" class="form-control">
 @foreach($entities ?? [] as $rel)
 <option value="{{ $rel->id }}">{{ $rel->name }}</option>
@@ -33,12 +33,7 @@
 </select>     
 </div>  
 
-<div class="form-group"><label>الخصوصية</label>
-<select name="mail_privacy_id" id="add_mail_privacy_id" class="form-control">
-@foreach($privacies ?? [] as $rel)
-<option value="{{ $rel->id }}">{{ $rel->name }}</option>
-@endforeach
-</select></div>    
+
 
 <label>الجواب</label>
 <input type="file" name="file" class="filepond" >
@@ -69,12 +64,7 @@
 </select>
 </div>
 
-<div class="form-group"><label>الخصوصية</label>
-<select name="mail_privacy_id" id="edit_mail_privacy_id" class="form-control">
-@foreach($privacies ?? [] as $rel)
-<option value="{{ $rel->id }}">{{ $rel->name }}</option>
-@endforeach
-</select></div>    
+   
 </div>
 <div class="modal-footer"><button type="submit" class="btn btn-success">تحديث</button></div>
 </div>
@@ -154,11 +144,9 @@
 <th><input type='checkbox' id='selectAll' style="margin-top:10px;"></th>
 <th>العنوان</th>
 <th>الوصف</th>
-<th>الحالة</th>
-<th>الخصوصية</th>
-<th>المرسل</th>
-<th>الجهه</th>
-<th>الموقع</th>
+<th>حاله النشر</th>
+<th>الجهه المصدره</th>
+<th>التوقيع</th>
 <th>العمليات</th>
 </tr>
 </thead>
@@ -170,15 +158,12 @@
 <td>{{ $item->title }}</td>
 <td>{{ $item->description }}</td>
 <td>{{ $item->status->name ?? 'N/A' }}</td>
-<td>{{ $item->privacy->name ?? 'N/A' }}</td>
-<td>{{ $item->writed_by ?? 'N/A' }}</td>
 <td>{{ $item->entity->name ?? 'N/A' }}</td>
 <td>{{ $item->user->name ?? 'غير موقع' }}</td>
 <td>
 <button class="btn btn-sm btn-purple shareBtn"     
 data-toggle="modal"
 data-target="#shareModal"
-data-share_mail_privacy_id="{{ $item->privacy->id }}"
 data-id="{{ $item->id }}">
 <i class="fa fa-share"></i>
 </button>
@@ -190,7 +175,6 @@ data-target="#editModal"
 data-id="{{ $item->id }}"
 data-edit_title="{{ $item->title }}"
 data-edit_description="{{ $item->description }}"
-data-edit_mail_privacy_id="{{ $item->privacy->id }}"
 data-edit_entity_id="{{ $item->entity->id }}">
 <i class="fa fa-edit"></i></button>
 <button class="btn btn-sm btn-warning text-white archiveBtn" data-id="{{ $item->id }}"><i class="fa fa-archive"></i></button>
@@ -239,14 +223,12 @@ confirmButtonText: 'حسناً'
 $('.editBtn').on('click',function(){
 let edit_title=  $(this).data('edit_title');
 let edit_description =  $(this).data('edit_description');
-let edit_mail_privacy_id =  $(this).data('edit_mail_privacy_id');
 let edit_department_id =  $(this).data('edit_department_id');
 let edit_entity_id =  $(this).data('edit_entity_id');
 let id =  $(this).data('id');
 $('#editModal').on('shown.bs.modal', function () {
 $('#edit_title').val(edit_title);
 $('#edit_description').val(edit_description);
-$('#edit_mail_privacy_id').val(edit_mail_privacy_id);
 $('#edit_department_id').val(edit_department_id);
 $('#edit_entity_id').val(edit_entity_id);
 $('#edit_id').val(id);
@@ -256,10 +238,8 @@ $('#edit_id').val(id);
 
 <script>    
 $('.shareBtn').on('click',function(){
-let share_mail_privacy_id =  $(this).data('share_mail_privacy_id');
 let id =  $(this).data('id');
 $('#shareModal').on('shown.bs.modal', function () {
-$('#share_mail_privacy_id').val(share_mail_privacy_id);
 $('#share_id').val(id);
 });
 })
@@ -420,11 +400,15 @@ html += `
 <td>${item.title}</td>
 <td>${item.description}</td>
 <td>${item.status?.name ?? 'N/A'}</td>
-<td>${item.privacy?.name ?? 'N/A'}</td>
-<td>${item.writed_by ?? 'N/A'}</td>
 <td>${item.entity?.name ?? 'N/A'}</td>
 <td>${item.user?.name ?? 'غير موقع'}</td>
 <td>
+<button class="btn btn-sm btn-purple shareBtn"     
+data-toggle="modal"
+data-target="#shareModal"
+data-id="${item.id}">
+<i class="fa fa-share"></i>
+</button>
 <a class="btn btn-sm btn-secondary signBtn" href="${signUrl}"><i class="fa fa-signature"></i></a>    
 <a class="btn btn-sm btn-success viewBtn" href="${previewUrl}"><i class="fa fa-eye"></i></a>
     <button class="btn btn-sm btn-info editBtn" 
@@ -433,7 +417,6 @@ html += `
             data-id="${item.id}"
             data-edit_title="${item.title}"
             data-edit_description="${item.description}"
-            data-edit_mail_privacy_id="${item.privacy.id}"
             data-edit_entity_id="${item.entity.id}">
         <i class="fa fa-edit"></i>
     </button>
