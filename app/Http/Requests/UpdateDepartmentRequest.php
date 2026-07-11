@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class UpdateDepartmentRequest extends FormRequest
 {
@@ -20,28 +22,43 @@ class UpdateDepartmentRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-    public function rules(): array    
-    {    
+public function rules(): array
+{
+    $id = $this->input('id');
 
-        return [    
-            'name' => 'required|string|unique:departments',
-            'code' => 'required|string|regex:/^[0-9]+$/|unique:departments,code',
-            'id' => 'required',
+    return [
+        'name' => [
+            'required',
+            'string',
+            Rule::unique('departments', 'name')->ignore($id),
+        ],
 
-        ];
-    }
-  
-    public function messages(): array
-    {
-        return [
-        'name.required' => 'يجب ملأ حقل الاسم ',  
-        'name.string' => 'الاسم جب ان يكون نص',  
-        'name.unique' => 'الاسم موجود بالفعل',  
-        'code.required' => 'يجب ملأ حقل الكود ',  
-        'code.string' => 'الكود جب ان يكون نص',  
+        'code' => [
+            'required',
+            'string',
+            'regex:/^[0-9]+$/',
+            Rule::unique('departments', 'code')->ignore($id),
+        ],
+
+        'id' => 'required',
+    ];
+}
+
+public function messages(): array
+{
+    return [
+        'name.required' => 'يجب ملأ حقل الاسم',
+        'name.string' => 'الاسم يجب أن يكون نص',
+        'name.unique' => 'الاسم موجود بالفعل',
+
+        'code.required' => 'يجب ملأ حقل الكود',
+        'code.string' => 'الكود يجب أن يكون نص',
         'code.unique' => 'الكود موجود بالفعل',
         'code.regex' => 'يجب أن يتكوّن الكود من أرقام فقط دون أن يحتوي على حروف أو رموز',
-        'id.required' => 'الطلب يحمل مشاكل امنيه' 
-        ];
-    }
+
+        'id.required' => 'الطلب يحمل مشاكل أمنية',
+    ];
 }
+
+}
+

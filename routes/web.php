@@ -14,7 +14,7 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth','throttle:60,1'])->group(function () {
+Route::middleware(['auth','throttle:60,1','active'])->group(function () {
 
 Route::get('/mail/index', [MailController::class, 'index'])->name('mail.index');
 Route::post('/mail/store', [MailController::class, 'store'])->name('mail.store');

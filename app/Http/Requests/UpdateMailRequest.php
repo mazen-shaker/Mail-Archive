@@ -19,28 +19,33 @@ class UpdateMailRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      */
-    public function rules(): array
-    {    
 
-        return [    
-            'title' => 'required|string',
-            'description' => 'required|string',
-            'entity_id' => 'required',
-            'mail_privacy_id' => 'required',
-            'id' => 'required',
-        ];
-    }
-  
-    public function messages(): array
-    {
-        return [
-        'name.required' => 'يجب ملأ حقل الاسم ',  
-        'name.string' => 'الاسم جب ان يكون نص',  
-        'description.required' => 'يجب ملأ حقل الوصف ',  
-        'description.string' => 'الوصف جب ان يكون نص',  
-        'entity_id.required' => 'يجب تحديد الجهه المرسله',
-        'mail_privacy_id.required' => 'يجب تحديد الخصوصيه',
-        'id.required' => 'الطلب يحمل مشاكل امنيه' 
-        ];
-    }
+public function rules(): array
+{
+    return [
+        'title' => 'required|string',
+        'description' => 'required|string',
+        'entity_id' => 'required',
+        'mail_privacy_id' => 'required',
+        'id' => 'required',
+    ];
+}
+
+public function messages(): array
+{
+    return [
+        'title.required' => 'يجب ملأ حقل العنوان',
+        'title.string' => 'العنوان يجب أن يكون نص',
+
+        'description.required' => 'يجب ملأ حقل الوصف',
+        'description.string' => 'الوصف يجب أن يكون نص',
+
+        'entity_id.required' => 'يجب تحديد الجهة المرسلة',
+
+        'mail_privacy_id.required' => 'يجب تحديد خصوصية الخطاب',
+
+        'id.required' => 'الطلب يحمل مشاكل أمنية',
+    ];
+}
+
 }
