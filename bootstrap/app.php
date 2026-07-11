@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'moderator' => \App\Http\Middleware\ModeratorRoute::class,
             'admin' => \App\Http\Middleware\AdminRoute::class,
+            'active' => \App\Http\Middleware\CheckUserStatus::class,
             ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

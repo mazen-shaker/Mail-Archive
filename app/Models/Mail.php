@@ -18,7 +18,7 @@ use App\Models\Inbox;
 use App\Models\MailOwner;
 
 
-  
+
 class Mail extends Model
 {
 
@@ -27,13 +27,14 @@ protected $fillable = [
     'description',
     'file_type',
     'file_path',
-    'mail_status_id',    
+    'mail_status_id',
     'mail_privacy_id',
     'user_id',
-    'department_id',  
+    'department_id',
     'entity_id',
-    'writed_by'
-];
+    'writed_by',
+    'sign'
+  ];
 
 
     /** @use HasFactory<\Database\Factories\MailFactory> */
@@ -52,4 +53,4 @@ protected $fillable = [
 
 
 }
-  
+

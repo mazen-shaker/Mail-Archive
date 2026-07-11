@@ -6,7 +6,7 @@
 <h4 class="content-title mb-0 my-auto">الجوابات</h4>
 </div>
 </div>
-</div>  
+</div>
 @endsection
 @section('content')
 <form action="" method="post" id="selectedGroub">
@@ -30,8 +30,8 @@
 @foreach($entities ?? [] as $rel)
 <option value="{{ $rel->id }}">{{ $rel->name }}</option>
 @endforeach
-</select>     
-</div>  
+</select>
+</div>
 
 
 
@@ -64,7 +64,7 @@
 </select>
 </div>
 
-   
+
 </div>
 <div class="modal-footer"><button type="submit" class="btn btn-success">تحديث</button></div>
 </div>
@@ -89,7 +89,7 @@
 <option value="{{ $rel->id }}">{{ $rel->name }}</option>
 @endforeach
 </select>
-</div>    
+</div>
 
 
   <div class="form-group"><label>الخصوصيه</label>
@@ -98,9 +98,9 @@
 <option value="{{ $rel->id }}">{{ $rel->name }}</option>
 @endforeach
 </select>
-  </div>   
+  </div>
 
-  
+
 
 <div class="form-group d-flex flex-column">
 <div class="form-control d-flex justify-center align-items-center " style="outline:none; border:none;">
@@ -134,7 +134,7 @@
 <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
 <button class="btn btn-warning text-white archive-all-btn" id="bulkArchive"><i class="fa fa-archive"></i> أرشفة المحدد</button>
 </div>
-</div>   
+</div>
 <div class="card-body">
 <input type="text" id="searchInput" class="form-control mb-3" placeholder="بحث سريع عن الجوابات...">
 <div class="table-responsive">
@@ -159,17 +159,17 @@
 <td>{{ $item->description }}</td>
 <td>{{ $item->status->name ?? 'N/A' }}</td>
 <td>{{ $item->entity->name ?? 'N/A' }}</td>
-<td>{{ $item->user->name ?? 'غير موقع' }}</td>
+<td>{{ $item->sign ?? 'غير موقع' }}</td>
 <td>
-<button class="btn btn-sm btn-purple shareBtn"     
+<button class="btn btn-sm btn-purple shareBtn"
 data-toggle="modal"
 data-target="#shareModal"
 data-id="{{ $item->id }}">
 <i class="fa fa-share"></i>
 </button>
-<a class="btn btn-sm btn-secondary signBtn" href="{{ route('mail.sign', $item->id) }}"><i class="fa fa-signature"></i></a>    
+<a class="btn btn-sm btn-secondary signBtn" href="{{ route('mail.sign', $item->id) }}"><i class="fa fa-signature"></i></a>
 <a class="btn btn-sm btn-success viewBtn" href="{{ route('mail.preview', $item->id) }}"><i class="fa fa-eye"></i></a>
-<button class="btn btn-sm btn-info editBtn"     
+<button class="btn btn-sm btn-info editBtn"
 data-toggle="modal"
 data-target="#editModal"
 data-id="{{ $item->id }}"
@@ -190,12 +190,12 @@ data-edit_entity_id="{{ $item->entity->id }}">
 </table>
 </div>
 </div>
-</div>  
 </div>
 </div>
-</div>  
 </div>
-</div>    
+</div>
+</div>
+</div>
 
 @endsection
 
@@ -219,7 +219,7 @@ confirmButtonText: 'حسناً'
 </script>
 @endif
 
-<script>    
+<script>
 $('.editBtn').on('click',function(){
 let edit_title=  $(this).data('edit_title');
 let edit_description =  $(this).data('edit_description');
@@ -236,7 +236,7 @@ $('#edit_id').val(id);
 })
 </script>
 
-<script>    
+<script>
 $('.shareBtn').on('click',function(){
 let id =  $(this).data('id');
 $('#shareModal').on('shown.bs.modal', function () {
@@ -250,7 +250,7 @@ $('#share_id').val(id);
 <script>
 document.querySelectorAll('.deleteBtn').forEach(function(btn) {
 btn.addEventListener('click', function(e) {
-e.preventDefault(); 
+e.preventDefault();
 let id = btn.dataset.id;
 Swal.fire({
 title: 'هل متأكد من عمليه الحذف؟',
@@ -273,7 +273,7 @@ window.location.href = "/mail/destroy/"+id;
 <script>
 document.querySelectorAll('.archiveBtn').forEach(function(btn) {
 btn.addEventListener('click', function(e) {
-e.preventDefault(); 
+e.preventDefault();
 let id = btn.dataset.id;
 Swal.fire({
 title: 'هل متأكد من عمليه الارشفه',
@@ -308,7 +308,7 @@ e.preventDefault();
 
 if (btn.classList.contains('add-btn')) {
 return;
-}  
+}
 
 const anyChecked = Array.from(itemCheckboxes).some(cb => cb.checked);
 
@@ -355,7 +355,7 @@ form.action = `{{ route('mail.archive.all') }}`;
 form.submit();
 }
 });
-}  
+}
 });
 });
 </script>
@@ -403,17 +403,17 @@ html += `
 <td>${item.entity?.name ?? 'N/A'}</td>
 <td>${item.user?.name ?? 'غير موقع'}</td>
 <td>
-<button class="btn btn-sm btn-purple shareBtn"     
+<button class="btn btn-sm btn-purple shareBtn"
 data-toggle="modal"
 data-target="#shareModal"
 data-id="${item.id}">
 <i class="fa fa-share"></i>
 </button>
-<a class="btn btn-sm btn-secondary signBtn" href="${signUrl}"><i class="fa fa-signature"></i></a>    
+<a class="btn btn-sm btn-secondary signBtn" href="${signUrl}"><i class="fa fa-signature"></i></a>
 <a class="btn btn-sm btn-success viewBtn" href="${previewUrl}"><i class="fa fa-eye"></i></a>
-    <button class="btn btn-sm btn-info editBtn" 
-            data-toggle="modal" 
-            data-target="#editModal" 
+    <button class="btn btn-sm btn-info editBtn"
+            data-toggle="modal"
+            data-target="#editModal"
             data-id="${item.id}"
             data-edit_title="${item.title}"
             data-edit_description="${item.description}"

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
-            
+
             $table->string('title');
+            $table->string('sign')->nullable();
             $table->text('description')->nullable();
             $table->string('file_type');
             $table->string('file_path');
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-    }  
+    }
 
     /**
      * Reverse the migrations.

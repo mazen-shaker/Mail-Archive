@@ -7,35 +7,35 @@ use App\Http\Requests\StoreMailRequest;
 use App\Enums\MailStatusEnum;
 use App\Enums\MailPrivacyEnum;
 use App\Models\Mail;
-use App\Models\MailPrivacy;  
-use App\Models\Inbox;  
-use App\Models\MailOwner;  
+use App\Models\MailPrivacy;
+use App\Models\Inbox;
+use App\Models\MailOwner;
 use App\Models\Sign;
 use App\Models\Entity;
 use App\Models\Department;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;  
+use Illuminate\Support\Facades\Log;
 use App\Services\CacheService;
 use Illuminate\Support\Str;
 
 class MailLowService
 {
 
-    public function index($model){$mails = $model->paginate(10); $privacies = CacheService::getCache('privacies', MailPrivacy::class); 
+    public function index($model){$mails = $model->paginate(10); $privacies = CacheService::getCache('privacies', MailPrivacy::class);
     $entities = Entity::all(); $departments = Department::all(); return ['mails' => $mails,'privacies' => $privacies,'entities' => $entities,'departments' => $departments];}
-    
-    
+
+
     public function store($model,$request){$file = $request->file('file'); $path = $file->store('uploads', 'public'); $data = $request->toArray();
     $data['file_type'] = $file->getMimeType(); $data['file_path'] = $path;
     $data['mail_status_id'] = MailStatusEnum::NOTPUBLISHED->value; $mail = $model->create($data); MailOwner::create(["user_id" => Auth::user()->id, "mail_id" => $mail->id  ]); return $mail;}
 
 
-  
+
 
     public function share($model,$id, $data){
-        
+
     $record = $model->findOrFail($id);
-              
+
     $snapshot = $record->replicate();
 
     $oldPath = $record->file_path;
@@ -51,18 +51,18 @@ class MailLowService
     $snapshot->save();
 
     if($data->privacy == MailPrivacyEnum::PUBLIC->value){$departments = Department::pluck('id')->toArray();}else{$departments = $data->departments;};
-    
+
 
     $insert = collect($departments)->map(function ($deptId) use ($snapshot) {
     return ['mail_id' => $snapshot->id, 'department_id' => $deptId, 'created_at' => now(), 'updated_at' => now(),];
     })->toArray();
-    
+
     $record->mail_status_id = MailStatusEnum::PUBLISHED->value;
 
     $record->save();
 
     Inbox::insert($insert); return $snapshot;
-    
+
     }
 
 
@@ -77,8 +77,8 @@ class MailLowService
     if (!$request->hasFile('file')) {return response()->json(['status' => false, 'message' => 'لم يتم إرسال أي ملف'], 422);}
     if ($mail->file_path && Storage::disk('public')->exists($mail->file_path)) {Storage::disk('public')->delete($mail->file_path);}
     $newPath = $request->file('file')->store('uploads', 'public');
-    $mail->update(['file_path' => $newPath]);
+    $mail->update(['file_path' => $newPath, 'sign'=> Auth::user()->name,]);
     return response()->json(['status' => true, 'message' => 'تم حفظ الملف بنجاح','url' => Storage::url($newPath),'redirect' => route('mail.index'),]);}
 }
-    
-         
+
+

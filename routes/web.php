@@ -14,6 +14,8 @@ Route::get('/', function () {
 });
 
 
+Route::middleware(['auth','throttle:60,1'])->group(function () {
+
 Route::get('/mail/index', [MailController::class, 'index'])->name('mail.index');
 Route::post('/mail/store', [MailController::class, 'store'])->name('mail.store');
 Route::put('/mail/update', [MailController::class, 'update'])->name('mail.update');
@@ -27,7 +29,7 @@ Route::post('/mail/sign/save/{id}', [MailController::class, 'saveEditor'])->name
 Route::get('/mail/preview/{id}', [MailController::class, 'preView'])->name('mail.preview');
 Route::put('/mail/share', [MailController::class, 'share'])->name('mail.share');
 
-   
+
 Route::get('/sign/index', [SignController::class, 'index'])->name('sign.index');
 Route::post('/sign/store', [SignController::class, 'store'])->name('sign.store');
 Route::put('/sign/update', [SignController::class, 'update'])->name('sign.update');
@@ -37,6 +39,12 @@ Route::post('/sign/destroy/all', [SignController::class, 'destroyAll'])->name('s
 Route::post('/sign/archive/all', [SignController::class, 'archiveAll'])->name('sign.archive.all');
 Route::post('/sign/search', [SignController::class, 'search'])->name('sign.search');
 Route::get('/sign/preview/{id}', [SignController::class, 'preView'])->name('sign.preview');
+
+
+Route::get('/dashboard', function () {return view('dashboard');})->name('dashboard');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
 Route::middleware('admin')->group(function () {
@@ -70,19 +78,8 @@ Route::get('/user/archive/{id}', [RegisteredUserController::class, 'archive'])->
 Route::post('/user/destroy/all', [RegisteredUserController::class, 'destroyAll'])->name('user.destroy.all');
 Route::post('/user/archive/all', [RegisteredUserController::class, 'archiveAll'])->name('user.archive.all');
 Route::post('/user/search', [RegisteredUserController::class, 'search'])->name('user.search');
-
-
+});
 });
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 require __DIR__.'/auth.php';
