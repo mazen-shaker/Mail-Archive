@@ -12,6 +12,7 @@ use App\Models\Inbox;
 use App\Models\MailOwner;
 use App\Models\Sign;
 use App\Models\Entity;
+use App\Models\MailStatus;
 use App\Models\Department;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -23,6 +24,11 @@ class MailLowService
 
     public function index($model){$mails = $model->paginate(10); $privacies = CacheService::getCache('privacies', MailPrivacy::class);
     $entities = Entity::all(); $departments = Department::all(); return ['mails' => $mails,'privacies' => $privacies,'entities' => $entities,'departments' => $departments];}
+
+
+
+    public function reportIndex($model){$mails = $model->get();
+    $entities = Entity::all(); $departments = Department::all(); $mailStatus = CacheService::getCache('mailStatus', MailStatus::class);return ['mails' => $mails,'mailStatus' => $mailStatus,'entities' => $entities,'departments' => $departments];}
 
 
     public function store($model,$request){$file = $request->file('file'); $path = $file->store('uploads', 'public'); $data = $request->toArray();
@@ -79,6 +85,53 @@ class MailLowService
     $newPath = $request->file('file')->store('uploads', 'public');
     $mail->update(['file_path' => $newPath, 'sign'=> Auth::user()->name,]);
     return response()->json(['status' => true, 'message' => 'تم حفظ الملف بنجاح','url' => Storage::url($newPath),'redirect' => route('mail.index'),]);}
+
+
+public function report($request, $model)
+{
+    $dateFrom = $request->date_from;
+    $dateTo = $request->date_to;
+    $department = $request->department;
+    $entity = $request->entity;
+    $status = $request->status;
+
+    $data = [];
+
+    $query = $model::query();
+
+    $query
+        ->when($dateFrom && empty($dateTo), function ($q) use ($dateFrom) {
+            $q->whereDate('created_at', '>=', $dateFrom);
+        })
+
+        ->when($dateTo && empty($dateFrom), function ($q) use ($dateTo) {
+            $q->whereDate('created_at', '<=', $dateTo);
+        })
+
+        ->when($dateFrom && $dateTo, function ($q) use ($dateFrom, $dateTo) {
+            $q->whereBetween('created_at', [$dateFrom, $dateTo]);
+        })
+
+        ->when($department, function ($q) use ($department) {
+            $q->whereHas('inbox', function ($query) use ($department) {
+                $query->where('department_id', $department);
+            });
+        })
+
+        ->when($entity, function ($q) use ($entity) {
+            $q->where('entity_id', $entity);
+        })
+
+        ->when($status, function ($q) use ($status) {
+            $q->where('mail_status_id', $status);
+        });
+
+    $mails = $query->get();
+
+    $data = $this->reportIndex();
+
+    $data['mails'] = $mails;
+
+    return $data;
+    }
 }
-
-

@@ -28,7 +28,7 @@ Route::get('/mail/sign/{id}', [MailController::class, 'sign'])->name('mail.sign'
 Route::post('/mail/sign/save/{id}', [MailController::class, 'saveEditor'])->name('mail.sign.save');
 Route::get('/mail/preview/{id}', [MailController::class, 'preView'])->name('mail.preview');
 Route::put('/mail/share', [MailController::class, 'share'])->name('mail.share');
-
+Route::get('/mail/report/index', [MailController::class, 'reportIndex'])->name('mail.report.index');
 
 Route::get('/sign/index', [SignController::class, 'index'])->name('sign.index');
 Route::post('/sign/store', [SignController::class, 'store'])->name('sign.store');

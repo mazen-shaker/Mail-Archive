@@ -26,8 +26,8 @@ class MailController extends Controller
     public function index(){$data = $this->service->index(); $mails = $data['mails']; $privacies = $data['privacies'];
     $entities = $data['entities']; $departments = $data['departments']; return view('mails.index', compact(['mails','privacies','entities','departments']));}
 
-    public function reportIndex(){$data = $this->service->reportIndex(); $mails = $data['mails']; $statuses = $data['mailStatus'];
-    $entities = $data['entities']; $departments = $data['departments']; return view('mails.report', compact(['mails','statuses','entities','departments']));}
+    public function reportIndex(){$data = $this->service->reportIndex(); $mails = $data['mails'];
+    $entities = $data['entities']; $departments = $data['departments']; return view('mails.index', compact(['mails','entities','departments']));}
 
 
     public function store(StoreMailRequest $request){$this->service->store($request); return redirect()->route('mail.index');}
@@ -62,9 +62,4 @@ class MailController extends Controller
 
 
     public function search(){$results = $this->service->search($this->request->search); return response()->json($results);}
-
-
-    public function report(){$data = $this->service->report($$this->request;); $mails = $data['mails']; $privacies = $data['privacies'];
-    $entities = $data['entities']; $departments = $data['departments']; return view('mails.index', compact(['mails','privacies','entities','departments']));}
-
 }
