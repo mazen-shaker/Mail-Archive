@@ -17,17 +17,18 @@
 <h4 class="mb-0">التقارير</h4>
 </div>
 <div class="card-body">
-<form action="" method="GET">
+<form action="{{route('mail.report')}}" method="get">
 <div class="row">
 <div class="col-md-3">
-<div class="form-group"><label>من</label><input type="date" name="from_date" class="form-control"></div>
+<div class="form-group"><label>من</label><input type="date" value="{{$resultFromDate ?? ''}}" name="date_from" class="form-control"></div>
 </div>
 <div class="col-md-3">
-<div class="form-group"><label>إلى</label><input type="date" name="to_date" class="form-control"></div>
+<div class="form-group"><label>إلى</label><input type="date" value="{{$resultToDate ?? ''}} name="date_to" class="form-control"></div>
 </div>
 <div class="col-md-2">
 <div class="form-group"><label>الإدارات</label>
-<select name="department_id" class="form-control">
+<select name="department" class="form-control">
+<option value="" selected>-- عرض كل الأدارات --</option>
 @foreach($departments as $item)
 <option value="{{ $item->id }}">
     {{ $item->name }}
@@ -38,7 +39,8 @@
 </div>
 <div class="col-md-2">
 <div class="form-group"><label>الجهات المصدرة</label>
-<select name="entity_id" class="form-control">
+<select name="entity"  class="form-control">
+<option value="" selected>-- عرض كل الجهات المصدره --</option>
 @foreach($entities as $item)
 <option value="{{ $item->id }}">
     {{ $item->name }}
@@ -49,7 +51,8 @@
 </div>
 <div class="col-md-2">
 <div class="form-group"><label>حالة النشر</label>
-<select name="status_id" class="form-control">
+<select name="status"  class="form-control">
+<option value="" selected>-- عرض كل الحالات --</option>
 @foreach($statuses as $item)
 <option value="{{ $item->id }}">
     {{ $item->name }}
@@ -74,7 +77,7 @@
 <div class="col-md-4">
 <div class="card">
 <div class="card-body text-center">
-<h4 class="mb-0">{{ $total ?? 0 }}</h4>
+<h4 class="mb-0">{{ $resultCount ?? 0 }}</h4>
 <p class="mb-0">إجمالي الناتج</p>
 </div>
 </div>
@@ -82,7 +85,7 @@
 <div class="col-md-4">
 <div class="card">
 <div class="card-body text-center">
-<h4 class="mb-0">{{ $published ?? 0 }}</h4>
+<h4 class="mb-0">{{ $sharedCount ?? 0 }}</h4>
 <p class="mb-0">منشور</p>
 </div>
 </div>
@@ -90,7 +93,7 @@
 <div class="col-md-4">
 <div class="card">
 <div class="card-body text-center">
-<h4 class="mb-0">{{ $archived ?? 0 }}</h4>
+<h4 class="mb-0">{{ $archivedCount ?? 0 }}</h4>
 <p class="mb-0">تمت الأرشفة</p>
 </div>
 </div>
