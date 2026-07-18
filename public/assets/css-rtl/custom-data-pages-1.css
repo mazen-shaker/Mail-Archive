@@ -23,6 +23,8 @@ Description    :   Custom styles for data tables, buttons, and search inputs.
 -----------------------------------------------------------------*/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
+
+
 .btn-purple {
     background-color: #6f42c1 !important;
     color: #fff;

@@ -56,28 +56,51 @@
 window.showToast = function(notification) {
     const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+
+        // غير المكان
+        position: "bottom-start",
+
         showConfirmButton: false,
-        timer: 4000,
-        timerProgressBar: true,
-        // إضافة أنيميشن للدخول والخروج
+        timer: 8000,
+        timerProgressBar: false,
+
         showClass: {
-            popup: 'animate__animated animate__fadeInRight'
+            popup: 'animate__animated animate__fadeInLeft'
         },
         hideClass: {
-            popup: 'animate__animated animate__fadeOutRight'
+            popup: 'animate__animated animate__fadeOutLeft'
+        },
+
+        didOpen: (toast) => {
+
+            // وقف التايمر وقت الـ Hover
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+
+            // كمله لما الماوس يخرج
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+
+            // لو ضغط عليه يختفي
+            toast.addEventListener('click', () => {
+                Swal.close();
+            });
         }
     });
 
     Toast.fire({
-        // استخدام أيقونة FontAwesome بدلاً من أيقونات المكتبة التقليدية
         html: `
-            <div style="display: flex; align-items: center;">
-                <div style="background: #eef2ff; color: #4f46e5; padding: 10px; border-radius: 50%; margin-left: 15px;">
-                    <i class="fas fa-bell"></i> </div>
-                <div style="text-align: right;">
-                    <div style="font-weight: bold; color: #1f2937;">${notification.title || 'تنبيه جديد'}</div>
-                    <div style="font-size: 0.85em; color: #6b7280;">${notification.message || ''}</div>
+            <div style="display:flex;align-items:center;">
+                <div style="background:#eef2ff;color:#4f46e5;padding:10px;border-radius:50%;margin-left:15px;">
+                    <i class="fas fa-bell"></i>
+                </div>
+
+                <div style="text-align:right;">
+                    <div style="font-weight:bold;color:#1f2937;">
+                        ${notification.title || 'تنبيه جديد'}
+                    </div>
+
+                    <div style="font-size:.85em;color:#6b7280;">
+                        ${notification.message || ''}
+                    </div>
                 </div>
             </div>
         `,
@@ -87,8 +110,7 @@ window.showToast = function(notification) {
         }
     });
 }
-</script>
-<script>
+</script><script>
 // 1. حذف إشعار واحد (بدون تأكيد)
 function deleteNotification(id) {
     fetch(`/notifications/${id}`, {

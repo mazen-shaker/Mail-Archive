@@ -9,8 +9,9 @@ window.Echo = new Echo({
     wsHost: import.meta.env.VITE_REVERB_HOST,
     wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
     wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
-    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
-    enabledTransports: ['ws', 'wss'],
+    forceTLS:false,
+    enabledTransports: ['ws'],
+    disableStats: true,
 });
 
 
@@ -55,20 +56,30 @@ window.startListening = (userId) => {
                 }
 
                 const newNotify = `
-                    <a class="d-flex p-3 border-bottom bg-light" href="#">
-                        <div class="notifyimg bg-warning">
-                            <i class="la la-envelope-open text-white"></i>
-                        </div>
-                        <div class="mr-3">
-                            <h5 class="notification-label mb-1">${notification.message}</h5>
-                            <div class="notification-subtext">الآن</div>
-                        </div>
-                        <div class="mr-auto">
-                            <i class="las la-angle-left text-left text-muted"></i>
-                        </div>
-                    </a>
-                `;
-                list.insertAdjacentHTML('afterbegin', newNotify);
+    <div
+        id="notification-${notification.id}"
+        onclick="event.preventDefault(); deleteNotification('${notification.id}')"
+        class="d-flex p-3 border-bottom bg-light notf-notf"
+    >
+        <div class="notifyimg bg-warning">
+            <i class="la la-envelope-open text-white"></i>
+        </div>
+
+        <div class="mr-3">
+            <h5 class="notification-label mb-1">
+                ${notification.message}
+            </h5>
+
+            <div class="notification-subtext">
+                الآن
+            </div>
+        </div>
+
+        <div class="mr-auto">
+            <i class="las la-angle-left text-left text-muted"></i>
+        </div>
+    </div>
+`;               list.insertAdjacentHTML('afterbegin', newNotify);
             }
         });
 };

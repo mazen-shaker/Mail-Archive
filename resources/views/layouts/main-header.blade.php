@@ -30,7 +30,7 @@
 									</div>
 								</form>
 							</div>
-	<div class="dropdown nav-item main-header-notification">
+	<div class="dropdown notf-derop nav-item main-header-notification">
     <a class="new nav-link" href="#">
         <svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
             <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
@@ -46,13 +46,13 @@
                 <h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">الإشعارات</h6>
             </div>
             <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12">
-                لديك <span id="notification-count">{{ auth()->user()->unreadNotifications->count() }}</span> اشعار  
+                لديك <span id="notification-count">{{ auth()->user()->unreadNotifications->count() }}</span> اشعار
             </p>
         </div>
-        
+
      <div class="main-notification-list Notification-scroll" id="notifications-list">
     @forelse(auth()->user()->notifications as $notification)
-        <div class="d-flex p-3 border-bottom  {{ $notification->read_at ? '' : 'bg-light' }}" id="notification-{{ $notification->id }}" onclick="deleteNotification('{{ $notification->id }}')" >
+        <div class="d-flex p-3 border-bottom  {{ $notification->read_at ? '' : 'bg-light' }} notf-notf" id="notification-{{ $notification->id }}" onclick="deleteNotification('{{ $notification->id }}')" >
             <div class="notifyimg bg-warning">
                 <i class="la la-envelope-open text-white"></i>
             </div>

@@ -4,6 +4,7 @@
 <link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
 <!-- Maps css -->
 <link href="{{URL::asset('assets/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
+
 @endsection
 @section('page-header')
 				<!-- breadcrumb -->
@@ -29,7 +30,7 @@
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											<h4 class="tx-20 font-weight-bold mb-1 text-white">$5,74.12</h4>
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">{{ ($resultCount ?? 0) == 0 ? 'صفر' : $resultCount }}</h4>
 										</div>
 									</div>
 								</div>
@@ -40,12 +41,12 @@
 						<div class="card overflow-hidden sales-card bg-danger-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">عدد الجوابات المؤرشفه</h6>
+									<h6 class="mb-3 tx-12 text-white">عدد الجوابات الموقعة</h6>
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											<h4 class="tx-20 font-weight-bold mb-1 text-white">$1,230.17</h4>
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">{{ ($signedCount ?? 0) == 0 ? 'صفر' : $signedCount }}</h4>
 										</div>
 			    					</div>
 								</div>
@@ -56,12 +57,12 @@
 						<div class="card overflow-hidden sales-card bg-success-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">عدد الجوابات المنشزره</h6>
+									<h6 class="mb-3 tx-12 text-white">عدد الجوابات المنشوره </h6>
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											<h4 class="tx-20 font-weight-bold mb-1 text-white">$7,125.70</h4>
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">{{ ($sharedCount ?? 0) == 0 ? 'صفر' : $sharedCount }}</h4>
 										</div>
 							    	</div>
 								</div>
@@ -77,7 +78,7 @@
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											<h4 class="tx-20 font-weight-bold mb-1 text-white">$4,820.50</h4>
+											<h4 class="tx-20 font-weight-bold mb-1 text-white">{{ ($archivedCount ?? 0) == 0 ? 'صفر' : $archivedCount }}</h4>
 										</div>
 						            </div>
 								</div>
@@ -153,18 +154,24 @@ const lineOptions = {
 
     series: [{
         name: 'عدد الرسائل',
-        data: [12, 20, 15, 30, 22, 18]
+        data: @json($sharedRatio)
     }],
 
     xaxis: {
-        categories: [
-            'يناير',
-            'فبراير',
-            'مارس',
-            'أبريل',
-            'مايو',
-            'يونيو'
-        ]
+     categories: [
+     'يناير',
+    'فبراير',
+    'مارس',
+    'أبريل',
+    'مايو',
+    'يونيو',
+    'يوليو',
+    'أغسطس',
+    'سبتمبر',
+    'أكتوبر',
+    'نوفمبر',
+    'ديسمبر'
+    ]
     }
 };
 
@@ -186,7 +193,7 @@ const donutOptions = {
         }
     },
 
-    series: [120, 45, 35],
+    series: [@json($sharedCount),@json($archivedCount),@json($signedCount) ],
 
     labels: [
         'المنشورة',

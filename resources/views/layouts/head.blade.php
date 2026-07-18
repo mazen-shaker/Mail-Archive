@@ -26,10 +26,60 @@
 
 <link href="{{URL::asset('assets/css-rtl/style.css')}}" rel="stylesheet">
 
-<!--- Dark-mode css -->        
+<!--- Dark-mode css -->
 <link href="{{URL::asset('assets/css-rtl/style-dark.css')}}" rel="stylesheet">
 <!---Skinmodes css-->
 <link href="{{URL::asset('assets/css-rtl/skin-modes.css')}}" rel="stylesheet">
 <!---custom css-->
 <link href="{{URL::asset('assets/css-rtl/custom-data-pages-1.css')}}" rel="stylesheet">
 <link href="{{URL::asset('assets/css-rtl/matrix-page.css')}}" rel="stylesheet">
+<style>
+
+.swal2-popup div:hover{
+cursor:pointer !important;
+}
+
+.my-custom-toast {
+    cursor: pointer;
+    transition: opacity .35s ease, transform .35s ease;
+}
+
+.my-custom-toast:hover {
+    background: #f3f4f6 !important; /* أغمق سنة */
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    cursor: pointer;
+}
+
+
+.notf-notf{
+  border-radius:20px !important;
+  margin-top:10px !important;
+  margin-bottom:5px !important;
+  margin-right:6px;
+  margin-left:6px;
+}
+.notf-notf:hover{
+cursor:pointer !important;
+background-color:#e0e0e0 !important;
+transition: all 0.3s ease;
+}
+
+.notification-label:hover {
+color:black;
+}
+
+
+.main-notification-list {
+padding-bottom:10px !important;
+border-bottom-left-radius: 12px !important;
+border-bottom-right-radius: 12px !important;
+}
+
+.notf-derop {
+border-bottom-left-radius: 12px !important;
+border-bottom-right-radius: 12px !important;
+
+}
+</style>
+
