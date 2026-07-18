@@ -16,6 +16,10 @@ Route::get('/', function () {
 
 Route::middleware(['auth','throttle:60,1','active'])->group(function () {
 
+
+Route::get('/dashboard', [RegisteredUserController::class, 'dashboard'])->name('dashboard');
+Route::delete('/notification/destroy/{id}', [RegisteredUserController::class, 'destroyNotification'])->name('notification.destroy');
+
 Route::get('/mail/index', [MailController::class, 'index'])->name('mail.index');
 Route::post('/mail/store', [MailController::class, 'store'])->name('mail.store');
 Route::put('/mail/update', [MailController::class, 'update'])->name('mail.update');
@@ -43,7 +47,6 @@ Route::post('/sign/search', [SignController::class, 'search'])->name('sign.searc
 Route::get('/sign/preview/{id}', [SignController::class, 'preView'])->name('sign.preview');
 
 
-Route::get('/dashboard', [RegisteredUserController::class, 'dashboard'])->name('dashboard');
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

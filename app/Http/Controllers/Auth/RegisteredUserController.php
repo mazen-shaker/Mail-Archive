@@ -32,6 +32,8 @@ class RegisteredUserController extends Controller
     public function dashboard(){$data = $this->service->dashboard(); return view('dashboard',$data);}
 
 
+    public function destroyNotification($id){return $this->service->destroyNotification($id);}
+
 
     public function index(){$data = $this->service->index(); $users = $data['users']; $roles = $data['roles']; $departments = $data['departments'];
     $statuss = $data['statuss']; return view('users.index', compact(['users','roles','departments','statuss']));}

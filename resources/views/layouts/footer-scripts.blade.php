@@ -110,11 +110,15 @@ window.showToast = function(notification) {
         }
     });
 }
-</script><script>
+</script>
+
+
+
+<script>
 // 1. حذف إشعار واحد (بدون تأكيد)
 function deleteNotification(id) {
-    fetch(`/notifications/${id}`, {
-        method: 'DELETE',
+    fetch(`/notification/destroy/${id}`, {
+        method: 'delete',
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
             'Content-Type': 'application/json'
@@ -133,32 +137,6 @@ function deleteNotification(id) {
                     checkEmptyList();
                 }, 300);
             }
-        }
-    });
-}
-
-// 2. حذف جميع الإشعارات
-function deleteAllNotifications() {
-    fetch(`/notifications/delete-all`, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const list = document.getElementById('notifications-list');
-            list.style.opacity = '0'; // حركة اختفاء للقائمة كاملة
-            setTimeout(() => {
-                list.innerHTML = '<div class="p-3 text-center text-muted" id="no-notifications">لا توجد إشعارات حالياً</div>';
-                list.style.opacity = '1';
-                document.getElementById('notification-count').innerText = '0';
-                // إخفاء النقطة النابضة إذا وجدت
-                const pulse = document.getElementById('notification-pulse');
-                if(pulse) pulse.remove();
-            }, 300);
         }
     });
 }
