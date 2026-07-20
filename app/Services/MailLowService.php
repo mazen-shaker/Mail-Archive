@@ -14,10 +14,13 @@ use App\Models\Sign;
 use App\Models\Entity;
 use App\Models\MailStatus;
 use App\Models\Department;
+use App\Models\user;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use App\Services\CacheService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ResevedMailNotification as ResevingNotf;
 
 class MailLowService
 {
@@ -57,7 +60,6 @@ class MailLowService
 
     if($data->privacy == MailPrivacyEnum::PUBLIC->value){$departments = Department::pluck('id')->toArray();}else{$departments = $data->departments;};
 
-
     $insert = collect($departments)->map(function ($deptId) use ($snapshot) {
     return ['mail_id' => $snapshot->id, 'department_id' => $deptId, 'created_at' => now(), 'updated_at' => now(),];
     })->toArray();
@@ -66,7 +68,14 @@ class MailLowService
 
     $record->save();
 
-    Inbox::insert($insert); return $snapshot;
+    Inbox::insert($insert);
+
+    User::whereIn('department_id', $departments)
+    ->chunkById(500, function ($users) {
+        Notification::send($users, new ResevingNotf());
+    });
+
+    return $snapshot;
 
     }
 

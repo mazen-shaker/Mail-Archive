@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
 
 
 
-    public function update(UpdateUserRequest $request) {$this->service->update($request->validated()['id'], $request->validated()); return redirect()->route('user.index');}
+    public function update(UpdateUserRequest $request) {$this->service->updateUser($request->validated()['id'], $request->validated()); return redirect()->route('user.index');}
 
 
 

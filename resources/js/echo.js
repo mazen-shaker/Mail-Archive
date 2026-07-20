@@ -38,13 +38,22 @@ window.startListening = (userId) => {
 
             // 3. إظهار النقطة النابضة (Pulse)
             const pulse = document.getElementById('notification-pulse');
-            if (!pulse) {
-                // إذا لم تكن موجودة، قم بإضافتها برمجياً
-                const bellLink = document.querySelector('.main-header-notification .new.nav-link');
-                const span = document.createElement('span');
-                span.className = 'pulse';
-                span.id = 'notification-pulse';
-                bellLink.appendChild(span);
+
+             if (!pulse) {
+
+            // لو مش موجودة خالص
+            const bellLink = document.querySelector('.main-header-notification .new.nav-link');
+
+            const span = document.createElement('span');
+            span.className = 'pulse';
+            span.id = 'notification-pulse';
+
+            bellLink.appendChild(span);
+            } else if (getComputedStyle(pulse).display === 'none') {
+
+            // لو موجودة لكن متخفية
+             pulse.style.display = '';
+
             }
 
             // 4. إضافة الإشعار الجديد إلى أول القائمة
@@ -81,5 +90,15 @@ window.startListening = (userId) => {
     </div>
 `;               list.insertAdjacentHTML('afterbegin', newNotify);
             }
+        });
+};
+
+window.startListening = (userId) => {
+    window.Echo.private(`App.Models.User.${userId}`)
+       .listen('.user.disactive', (event) => {
+            console.log('وصل Event:', event);
+
+            // أي كود أنت عايزه
+            alert(event.message);
         });
 };

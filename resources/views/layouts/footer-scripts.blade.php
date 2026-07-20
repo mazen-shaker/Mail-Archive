@@ -153,8 +153,10 @@ function updateNotificationCount(change) {
 // دالة مساعدة للتأكد من حالة القائمة
 function checkEmptyList() {
     const list = document.getElementById('notifications-list');
+    const plus= document.getElementById('notification-pulse');
     if (list && list.querySelectorAll('.d-flex.p-3').length === 0) {
         list.innerHTML = '<div class="p-3 text-center text-muted" id="no-notifications">لا توجد إشعارات حالياً</div>';
+        plus.style.display = "none";
     }
 }
 </script>
