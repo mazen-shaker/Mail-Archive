@@ -3,7 +3,7 @@
 namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use App\Models\User;  
+use App\Models\User;
 use App\Enums\RoleEnum as ROLE;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,7 +25,7 @@ public function boot(): void
 
     foreach ($permissions as $permission) {
         Gate::define($permission, function (User $user) {
-            return in_array($user->role_id, [ROLE::ADMIN->value, ROLE::MANAGER->value]);
+            return in_array($user->role_id, [ROLE::ADMIN->value]);
         });
     }
 }

@@ -57,8 +57,9 @@ class UserService extends BaseService
 
     public function search($search){$columns = ['name','email','role.name','department.name','status.name']; $relations = ['role','department','status']; return $this->model->search($search,$columns,$relations);}
 
+    public function disableUser($id){event(new DisActiveUser($id));}
 
-    public function updateUser($id, $data){$record = $this->update($id, $data); if($record->user_status_id == UserStatusEnum::INACTIVE->value){event(new DisActiveUser($id));} return $record; }
+    public function updateUser($id, $data){$record = $this->update($id, $data); if($record->user_status_id == UserStatusEnum::INACTIVE->value){$this->disableUser($id);}; return $record; }
 
 }
 

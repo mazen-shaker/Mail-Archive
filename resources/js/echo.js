@@ -91,14 +91,38 @@ window.startListening = (userId) => {
 `;               list.insertAdjacentHTML('afterbegin', newNotify);
             }
         });
+
+
 };
 
-window.startListening = (userId) => {
-    window.Echo.private(`App.Models.User.${userId}`)
-       .listen('.user.disactive', (event) => {
-            console.log('وصل Event:', event);
+window.Echo.private(`App.Models.User.${userId}`)
+    .listen('.user.disabled', (event) => {
+        Swal.fire({
+            title: 'تم تعليق الحساب',
+            text: 'لقد تم تعليق حسابك مؤقتا',
+            icon: 'warning',
 
-            // أي كود أنت عايزه
-            alert(event.message);
+            confirmButtonText: 'حسنا',
+
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            allowEnterKey: false,
+
+            timer: 30000, // 30 ثانية
+            timerProgressBar: true,
+
+            didOpen: () => {
+                const popup = Swal.getPopup();
+
+                // منع أي محاولة خروج من المودال
+                popup.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            },
+
+            willClose: () => {
+                location.reload();
+            }
+
         });
-};
+    });

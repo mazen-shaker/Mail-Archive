@@ -19,13 +19,13 @@ class DisActiveUser implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel("private-App.Models.User.{$this->userId}"),
+        new PrivateChannel("App.Models.User.{$this->userId}"),
         ];
     }
 
     public function broadcastAs(): string
     {
-        return 'user.disactive';
+        return 'user.disabled';
     }
 
     public function broadcastWith(): array

@@ -14,6 +14,12 @@ Route::get('/', function () {
 });
 
 
+Route::get('/department/archive/index', function () {
+    return "Hello worled";
+})->name('department.archive.index');
+
+
+
 Route::middleware(['auth','throttle:60,1','active'])->group(function () {
 
 
@@ -63,6 +69,9 @@ Route::get('/department/archive/{id}', [DepartmentController::class, 'archive'])
 Route::post('/department/destroy/all', [DepartmentController::class, 'destroyAll'])->name('department.destroy.all');
 Route::post('/department/archive/all', [DepartmentController::class, 'archiveAll'])->name('department.archive.all');
 Route::post('/department/search', [DepartmentController::class, 'search'])->name('department.search');
+#Route::get('/department/archive/index', [DepartmentController::class, 'archiveIndex'])->name('department.archive.index');
+
+
 
 Route::get('/entity/index', [EntityController::class, 'index'])->name('entity.index');
 Route::post('/entity/store', [EntityController::class, 'store'])->name('entity.store');

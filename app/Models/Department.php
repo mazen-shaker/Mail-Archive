@@ -17,7 +17,7 @@ protected $fillable = [
     'name',
     'code',
 ];
-  
+
 
     /** @use HasFactory<\Database\Factories\DepartmentFactory> */
     use SoftDeletes, SoftDeletes, HasFactory, Searchable;
@@ -27,7 +27,5 @@ protected $fillable = [
     public function mail() { return $this->hasMany(Mail::class); }
 
     public function mailDepartment() { return $this->hasMany(MailDepartment::class); }
-
-
 }
-      
+

@@ -39,8 +39,8 @@ class RegisteredUserController extends Controller
     $statuss = $data['statuss']; return view('users.index', compact(['users','roles','departments','statuss']));}
 
 
-    public function store(Request $request): RedirectResponse {$request->validate(['name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class], 'password' => ['required', 'confirmed', Rules\Password::defaults()],]);
-    $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password),]); event(new Registered($user)); Auth::login($user); return redirect(route('dashboard', absolute: false));}
+    #public function store(Request $request): RedirectResponse {$request->validate(['name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class], 'password' => ['required', 'confirmed', Rules\Password::defaults()],]);
+    #$user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password),]); event(new Registered($user)); Auth::login($user); return redirect(route('dashboard', absolute: false));}
 
 
     public function add(StoreUserRequest $request): RedirectResponse {$data = $request->validated(); $data['password'] = Hash::make($data['password']); $this->service->store($data); return redirect()->route('user.index');}

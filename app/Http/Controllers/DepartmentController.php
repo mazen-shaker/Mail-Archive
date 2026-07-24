@@ -10,13 +10,15 @@ use Illuminate\Http\Request;
 use App\Services\CacheService;
 
 class DepartmentController extends Controller
-{  
+{
     protected $service;
-    protected $request;       
+    protected $request;
 
     public function __construct(DepartmentService $service, Request $request){$this->service = $service; $this->request = $request;}
 
     public function index() {$departments = $this->service->index(); return view('departments.index', compact('departments'));}
+
+    public function archiveIndex() {$departments = $this->service->archiveIndex(); return view('archive.departments-index', compact('departments'));}
 
     public function store(StoreDepartmentRequest $request){$this->service->store($request->validated()); CacheService::resetCache('departments', Department::class); return redirect()->route('department.index');}
 
@@ -25,7 +27,7 @@ class DepartmentController extends Controller
     public function destroy($id){$this->service->destroy($id); CacheService::resetCache('departments', Department::class); return redirect()->route('department.index');}
 
     public function archive($id){$this->service->archive($id); CacheService::resetCache('departments', Department::class); return redirect()->route('department.index');}
-     
+
     public function destroyAll(){$this->service->deleteMultiple($this->request->ids); CacheService::resetCache('departments', Department::class); return redirect()->route('department.index');}
 
     public function archiveAll(){$this->service->archiveMultiple($this->request->ids); CacheService::resetCache('departments', Department::class); return redirect()->route('department.index');}
@@ -35,4 +37,4 @@ class DepartmentController extends Controller
     public function search(){$results = $this->service->search($this->request->search); return response()->json($results);}
 
 
-}  
+}
