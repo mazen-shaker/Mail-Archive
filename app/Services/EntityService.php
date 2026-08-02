@@ -11,13 +11,13 @@ use App\Services\FileService;
 class EntityService extends BaseService
 {
     protected $model;
-    protected $importClass = EntitiesImport::class; 
-    protected $fileService; 
+    protected $importClass = EntitiesImport::class;
+    protected $fileService;
 
     public function __construct(FileService $fileService, Entity $model){$this->model = $model; $this->fileService = $fileService;}
-  
-    public function import($request) {return $this->fileService->importExcel($request, $this->importClass,);}     
 
-    public function search($search){$columns = ['name']; return $this->model->search($search,$columns);}
+    public function import($request) {return $this->fileService->importExcel($request, $this->importClass,);}
+
+    public function search($search, $archive){$columns = ['name']; return $this->model->search($archive,$search,$columns);}
 
 }

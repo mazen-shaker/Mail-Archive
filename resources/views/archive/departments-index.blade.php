@@ -22,8 +22,8 @@
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">إدارة الادارات</h4>
                 <div class="bulkActions">
-                    <button class="btn btn-success add-btn" data-toggle="modal" data-target="#importModal"><i class="fas fa-table"></i> إستيراد</button>
                     <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
+                    <button class="btn btn-warning restore-all-btn" id="bulkDelete"><i class="fa fa-rotate-left"></i>  أرجاع المحدد</button>
                 </div>
             </div>
             <div class="card-body">
@@ -38,6 +38,7 @@
                                     <td><input type='checkbox' class="selectItem" name="ids[]" form="selectedGroub" value='{{ $item->id }}'></td><td>{{ $item->name }}</td><td>{{ $item->code }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
+                                        <a href="{{route('department.restore', $item->id)}}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
                                     </td>
                                 </tr>
                             @empty
@@ -117,25 +118,19 @@ $(document).on('click', '.deleteBtn', function(e) {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
 
-      // استثناء زرار الإضافة
-      if (btn.classList.contains('add-btn')) {
-        console.log('زرار الإضافة اشتغل');
-        return;
-      }
 
       // التأكد من وجود تشيكبوكس متعلم
       const anyChecked = Array.from(itemCheckboxes).some(cb => cb.checked);
-
-      if (!anyChecked) {
+     if (!anyChecked) {
         Swal.fire({
-          icon: 'info',
-          title: 'اختار عنصر الأول',
-          confirmButtonText: 'حسنا'
+           icon: 'info',
+           title: 'اختار عنصر الأول',
+           confirmButtonText: 'حسناً'
         });
-        return;
-      }
+      return;
+    }
 
-      // لو فيه عناصر متعلمه
+    // لو فيه عناصر متعلمه
       if (btn.classList.contains('del-all-btn')) {
         Swal.fire({
           title: 'هل متأكد من عمليه الحذف؟',
@@ -153,10 +148,10 @@ $(document).on('click', '.deleteBtn', function(e) {
 			 form.submit();
         }
         });
-      } else if(btn.classList.contains('archive-all-btn')) {
+      } else if(btn.classList.contains('restore-all-btn')) {
         Swal.fire({
-          title: 'هل متأكد من عمليه الارشفه',
-          text: "سوف يتم ارشفه العنصر",
+          title: 'هل متأكد من عمليه الارجاع',
+          text: "سوف يتم ارجاع العنصر",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d33',
@@ -166,7 +161,7 @@ $(document).on('click', '.deleteBtn', function(e) {
         }).then((result) => {
           if (result.isConfirmed) {
              let form = document.getElementById('selectedGroub');
-			 form.action = `{{ route('department.archive.all') }}`;
+			 form.action = `{{ route('department.restore.all') }}`;
 			 form.submit();
         }
         });
@@ -197,7 +192,7 @@ $(document).ready(function() {
         $('#index').hide();
 
         $.ajax({
-            url: '/department/search',
+            url: '/department/search/archive',
             type: 'post',
             data: { search: search },
             success: function(data) {
@@ -206,7 +201,7 @@ $(document).ready(function() {
                     html = `<tr><td colspan="20"><p class="no-data">لا توجد نتائج للبحث</p></td></tr>`;
                 } else {
                     $.each(data, function(i, item) {
-                        // تصليح الأخطاء هنا: item بدلاً من tem و استخدام النقطة بدلاً من السهم
+                       let restoreUrl = '/department/restore/'+item.id;
                         html += `
                             <tr id="row-${item.id}">
                                 <td><input type='checkbox' class="selectItem" name="ids[]" value='${item.id}'></td>
@@ -215,6 +210,7 @@ $(document).ready(function() {
 
                                 <td>
                                     <button class="btn btn-sm btn-danger deleteBtn" data-id="${item.id}"><i class="fa fa-trash"></i></button>
+                                    <a href="${restoreUrl}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
                                 </td>
                             </tr>`;
                     });

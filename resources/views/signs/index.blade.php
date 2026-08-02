@@ -7,10 +7,10 @@
 <h4 class="content-title mb-0 my-auto">التوقيعات</h4>
 </div>
 </div>
-</div>  
+</div>
 @endsection
 @section('content')
-<form action="" method="post" id="selectedGroub">   
+<form action="" method="post" id="selectedGroub">
 @csrf
 </form>
 
@@ -28,7 +28,7 @@
 
 <label>الجواب</label>
 <input type="file" name="file" class="filepond" >
-</div>     
+</div>
 <div class="modal-footer"><button type="submit" class="btn btn-primary">حفظ</button></div>
 </div>
 </form>
@@ -63,7 +63,7 @@
 <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
 <button class="btn btn-warning text-white archive-all-btn" id="bulkArchive"><i class="fa fa-archive"></i> أرشفة المحدد</button>
 </div>
-</div>   
+</div>
 <div class="card-body">
 <input type="text" id="searchInput" class="form-control mb-3" placeholder="بحث سريع عن التوقيعات...">
 <div class="table-responsive">
@@ -102,10 +102,10 @@ data-name="{{ $item->name }}">
 </table>
 </div>
 </div>
-</div>  
 </div>
 </div>
-</div>  
+</div>
+</div>
 </div>
 </div>
 
@@ -140,15 +140,15 @@ $('#edit_name').val(edit_name);
 $('#edit_id').val(id);
 });
 })
-</script>     
+</script>
 
 
 
 
 <script>
-$(document).on('click', '.deleteBtn', function(e) {
+document.querySelectorAll('.deleteBtn').forEach(function(btn) {
 btn.addEventListener('click', function(e) {
-e.preventDefault(); 
+e.preventDefault();
 let id = btn.dataset.id;
 Swal.fire({
 title: 'هل متأكد من عمليه الحذف؟',
@@ -169,9 +169,9 @@ window.location.href = "/sign/destroy/"+id;
 </script>
 
 <script>
-$(document).on('click', '.archiveBtn', function(e) {
+document.querySelectorAll('.archiveBtn').forEach(function(btn) {
 btn.addEventListener('click', function(e) {
-e.preventDefault(); 
+e.preventDefault();
 let id = btn.dataset.id;
 Swal.fire({
 title: 'هل متأكد من عمليه الارشفه',
@@ -206,7 +206,7 @@ e.preventDefault();
 
 if (btn.classList.contains('add-btn')) {
 return;
-}  
+}
 
 const anyChecked = Array.from(itemCheckboxes).some(cb => cb.checked);
 
@@ -253,7 +253,7 @@ form.action = `{{ route('sign.archive.all') }}`;
 form.submit();
 }
 });
-}  
+}
 });
 });
 </script>
@@ -286,13 +286,13 @@ success: function(data) {
 let html = '';
 if (!data || data.length === 0) {
 html = `<tr><td colspan="20"><p class="no-data">لا توجد نتائج للبحث</p></td></tr>`;
-} else {   
+} else {
 $.each(data, function(i, item) {
 let previewUrl = '/sign/preview/'+item.id;
 html += `
 <tr id="row-${item.id}">
 <td><input type='checkbox' class="selectItem" name="ids[]" value='${item.id}'></td>
-<td>${item.name}</td>  
+<td>${item.name}</td>
 <td>${item.user?.name ?? ''}</td>
 <td>
 <a class="btn btn-sm btn-success viewBtn" href="${previewUrl}"><i class="fa fa-eye"></i></a>

@@ -7,92 +7,27 @@
 							<h4 class="content-title mb-0 my-auto">الجهات</h4>
 						</div>
 					</div>
-				</div>  
+				</div>
 				<!-- breadcrumb -->
- 
+
 @endsection
 @section('content')
 <form action="" method="post" id="selectedGroub">
 	@csrf
 </form>
-<div id="toastContainer"></div>      
-<!-- Add Modal -->
-<div class="modal fade" id="importModal" tabindex="-1">
-    <div class="modal-dialog">
-          <form action="{{route('entity.import')}}" method="post" enctype="multipart/form-data">
-			@csrf
-
-	
-            <div class="modal-content">
-                <div class="modal-header"><h5>استيراد بيانات EXL</h5></div>
-                <div class="modal-body">
-                <div class="form-group">
-                    <label>الملف</label>
-                        <input type="file" name="file" class="filepond" >
-                </div>
-             </div>
-                <div class="modal-footer"><button type="submit" class="btn btn-primary">حفظ</button></div>
-            </div>
-        </form>
-    </div>
-</div>
+<div id="toastContainer"></div>
 
 
-
-<!-- Add Modal -->
-<div class="modal fade" id="addModal" tabindex="-1">
-    <div class="modal-dialog">
-        <form action="{{ route('entity.store') }}" method="POST">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header"><h5>إضافة جه</h5></div>
-                <div class="modal-body">
-                <div class="form-group">
-                    <label>الاسم</label>
-                    <input type="text" name="name" id="add_name" class="form-control" required>
-                </div>
-             </div>
-                <div class="modal-footer"><button type="submit" class="btn btn-primary">حفظ</button></div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1">
-    <div class="modal-dialog">
-        <form id="editForm" action="{{route('entity.update')}}" method="POST">
-            @csrf @method('PUT')
-            <input type="hidden" name="id" id="edit_id">
-            <div class="modal-content">
-                <div class="modal-header"><h5>تعديل الجه</h5></div>
-                <div class="modal-body">
-                <div class="form-group">
-                    <label>الاسم</label>
-                    <input type="text" name="name" id="edit_name" class="form-control" required>
-                </div>
-               </div>
-                <div class="modal-footer"><button type="submit" class="btn btn-success">تحديث</button></div>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-
-   
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">إدارة الجهات</h4>
                 <div class="bulkActions">
-                    <button class="btn btn-success add-btn" data-toggle="modal" data-target="#importModal"><i class="fas fa-table"></i> إستيراد</button>
-                    <button class="btn btn-primary add-btn" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> إضافة</button>
                     <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
-                    <button class="btn btn-warning text-white archive-all-btn" id="bulkArchive"><i class="fa fa-archive"></i> أرشفة المحدد</button>
+                    <button class="btn btn-warning restore-all-btn" id="bulkDelete"><i class="fa fa-rotate-left"></i>  أرجاع المحدد</button>
                 </div>
-            </div>   
+            </div>
             <div class="card-body">
                 <input type="text" id="searchInput" class="form-control mb-3" placeholder="بحث سريع عن الجهات...">
                 <div class="table-responsive">
@@ -101,27 +36,26 @@
                         <tbody id="index">
                             @forelse ($entities as $item)
                                 <tr id="row-{{ $item->id }}">
-                                    
+
                                     <td><input type='checkbox' class="selectItem" name="ids[]" form="selectedGroub" value='{{ $item->id }}'></td><td>{{ $item->name }}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-info editBtn" data-toggle="modal" data-target="#editModal" data-id="{{ $item->id }}" data-name="{{ $item->name }}"><i class="fa fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-warning text-white archiveBtn" data-id="{{ $item->id }}"><i class="fa fa-archive"></i></button>
+                                   <td>
                                         <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
+                                        <a href="{{route('entity.restore', $item->id)}}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
                                     </td>
                                 </tr>
                             @empty
                                 <tr><td colspan="20"><p class="no-data">لا توجد بيانات للعرض</p></td></tr>
                             @endforelse
                         </tbody>
-                    <tbody id="result">  
+                    <tbody id="result">
 					</tbody>
                     </table>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 </div>
-</div>  
+</div>
 </div>
 </div>
 
@@ -163,7 +97,7 @@
   checkAll.addEventListener('change', function() {
     itemCheckboxes.forEach(cb => cb.checked = this.checked);
   });
-     
+
   // التعامل مع الأزرار
   allBtns.forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -173,7 +107,7 @@
       if (btn.classList.contains('add-btn')) {
         console.log('زرار الإضافة اشتغل');
         return;
-      }  
+      }
 
       // التأكد من وجود تشيكبوكس متعلم
       const anyChecked = Array.from(itemCheckboxes).some(cb => cb.checked);
@@ -205,10 +139,10 @@
 			 form.submit();
         }
         });
-      } else if(btn.classList.contains('archive-all-btn')) {
+     } else if(btn.classList.contains('restore-all-btn')) {
         Swal.fire({
-          title: 'هل متأكد من عمليه الارشفه',
-          text: "سوف يتم ارشفه العنصر",
+          title: 'هل متأكد من عمليه الارجاع',
+          text: "سوف يتم ارجاع العنصر",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d33',
@@ -218,15 +152,14 @@
         }).then((result) => {
           if (result.isConfirmed) {
              let form = document.getElementById('selectedGroub');
-			 form.action = `{{ route('entity.archive.all') }}`;
+			 form.action = `{{ route('entity.restore.all') }}`;
 			 form.submit();
         }
         });
-      }  
+      }
     });
   });
 </script>
-
 <script>
 $(document).ready(function() {
     // setup CSRF token
@@ -238,7 +171,7 @@ $(document).ready(function() {
 
     $('#searchInput').on('keyup', function() {
         let search = $(this).val();
-        
+
         if (search == '') {
             $('#result').hide();
             $('#index').show();
@@ -249,7 +182,7 @@ $(document).ready(function() {
         $('#index').hide();
 
         $.ajax({
-            url: '/entity/search',
+            url: '/entity/search/archive',
             type: 'post',
             data: { search: search },
             success: function(data) {
@@ -258,15 +191,14 @@ $(document).ready(function() {
                     html = `<tr><td colspan="20"><p class="no-data">لا توجد نتائج للبحث</p></td></tr>`;
                 } else {
                     $.each(data, function(i, item) {
-                        // تصليح الأخطاء هنا: item بدلاً من tem و استخدام النقطة بدلاً من السهم
+                       let restoreUrl = '/entity/restore/'+item.id;
                         html += `
                             <tr id="row-${item.id}">
                                 <td><input type='checkbox' class="selectItem" name="ids[]" value='${item.id}'></td>
                                 <td>${item.name}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-info editBtn" data-toggle="modal" data-target="#editModal" data-id="${item.id}" data-name="${item.name}"><i class="fa fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-warning text-white archiveBtn" data-id="${item.id}"><i class="fa fa-archive"></i></button>
-                                        <button class="btn btn-sm btn-danger deleteBtn" data-id="${item.id}"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-danger deleteBtn" data-id="${item.id}"><i class="fa fa-trash"></i></button>
+                                    <a href="${restoreUrl}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
                                     </td>
                             </tr>`;
                     });
@@ -284,10 +216,10 @@ $(document).ready(function() {
 $(document).on('click', '.editBtn', function() {
     let name = $(this).data('name');
     let id = $(this).data('id');
-    
+
     $('#edit_name').val(name);
     $('#edit_id').val(id);
-    $('#editModal').modal('show'); 
+    $('#editModal').modal('show');
 });
 </script>
 
@@ -295,7 +227,7 @@ $(document).on('click', '.editBtn', function() {
 $(document).on('click', '.deleteBtn', function(e) {
     e.preventDefault();
     let id = $(this).data('id'); // جلب الـ id من الزر الذي ضُغط فعلياً
-    
+
     Swal.fire({
         title: 'هل متأكد من عمليه الحذف؟',
         text: "سوف يتم حذف العنصر نهائياً",
@@ -318,7 +250,7 @@ $(document).on('click', '.deleteBtn', function(e) {
 $(document).on('click', '.archiveBtn', function(e) {
     e.preventDefault();
     let id = $(this).data('id');
-    
+
     Swal.fire({
         title: 'هل متأكد من عمليه الارشفه',
         text: "سوف يتم ارشفه العنصر",

@@ -26,29 +26,37 @@ class MailController extends Controller
     public function index(){$data = $this->service->index(); $mails = $data['mails']; $privacies = $data['privacies'];
     $entities = $data['entities']; $departments = $data['departments']; return view('mails.index', compact(['mails','privacies','entities','departments']));}
 
+
     public function reportIndex(){$data = $this->service->reportIndex();  return view('mails.report', $data);}
 
 
-    public function store(StoreMailRequest $request){$this->service->store($request); return redirect()->route('mail.index');}
+    public function archiveIndex() {$mails = $this->service->archiveIndex(); return view('archive.mails-index', compact('mails'));}
 
 
-    public function update(UpdateMailRequest $request){$this->service->update($request->validated()['id'], $request->validated()); return redirect()->route('mail.index');}
+    public function restore($id) {$this->service->restore($id);  return redirect()->back();}
 
 
-    public function share(){$request = $this->request; $this->service->share($request->id, $request); return redirect()->route('mail.index');}
+    public function store(StoreMailRequest $request){$this->service->store($request); return redirect()->back();}
 
 
-    public function destroy($id){$this->service->destroy($id); return redirect()->route('mail.index');}
+    public function update(UpdateMailRequest $request){$this->service->update($request->validated()['id'], $request->validated()); return redirect()->back();}
 
 
-    public function archive($id){$this->service->archive($id); return redirect()->route('mail.index');}
+    public function share(){$request = $this->request; $this->service->share($request->id, $request); return redirect()->back();}
 
 
-    public function destroyAll(Request $request){$this->service->deleteMultiple($request->ids); return redirect()->route('mail.index');}
+    public function destroy($id){$this->service->destroy($id); return redirect()->back();}
 
 
-    public function archiveAll(Request $request){$this->service->archiveMultiple($request->ids); return redirect()->route('mail.index');}
+    public function archive($id){$this->service->archive($id); return redirect()->back();}
 
+
+    public function destroyAll(Request $request){$this->service->deleteMultiple($request->ids); return redirect()->back();}
+
+
+    public function archiveAll(Request $request){$this->service->archiveMultiple($request->ids); return redirect()->back();}
+
+    public function restoreAll(){$this->service->restoreMultiple($this->request->ids);  return redirect()->back();}
 
     public function preView($id){return $this->service->preViewFile($id);}
 
@@ -60,7 +68,7 @@ class MailController extends Controller
     public function saveEditor(Request $request, $id){return $this->service->saveEditor($request, $id);}
 
 
-    public function search(){$results = $this->service->search($this->request->search); return response()->json($results);}
+    public function search($archive = null){$results = $this->service->search($this->request->search,$archive); return response()->json($results);}
 
 
     public function report(){ $data = $this->service->report($this->request); return view('mails.report', $data);}

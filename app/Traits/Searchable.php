@@ -6,10 +6,11 @@ trait Searchable
 {
 
 
-public function search($search, array $columns, array $relations = [])
+public function search($archive = null, $search, array $columns, array $relations = [])
 {
     return $this->query()
         ->with($relations)
+        ->when($archive, fn ($query) => $query->onlyTrashed())
         ->where(function ($q) use ($search, $columns, $relations) {
 
             foreach ($columns as $column) {

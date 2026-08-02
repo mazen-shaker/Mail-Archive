@@ -77,10 +77,10 @@
 						<span class="side-menu__label">الارشيف</span><i class="angle fe fe-chevron-down"></i>
 						</a>
 						<ul class="slide-menu">
-							<li><a class="slide-item" href="{{ url('/department/archive/index') }}">الجهات</a></li>
-							<li><a class="slide-item" href="{{ route('department.archive.index') }}">الادارات</a></li>
-							<li><a class="slide-item" href="{{ route('department.archive.index') }}">الجوابات</a></li>
-							<li><a class="slide-item" href="{{ route('department.archive.index') }}">التوقيعات</a></li>
+							<li><a class="slide-item" href="{{ route('entity.trashed') }}">الجهات</a></li>
+							<li><a class="slide-item" href="{{ route('department.trashed') }}">الادارات</a></li>
+							<li><a class="slide-item" href="{{ route('mail.trashed') }}">الجوابات</a></li>
+							<li><a class="slide-item" href="{{ route('sign.trashed') }}">التوقيعات</a></li>
 						</ul>
 					</li>
 

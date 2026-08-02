@@ -13,116 +13,6 @@
 @csrf
 </form>
 
-<div class="modal fade" id="addModal" tabindex="-1">
-<div class="modal-dialog">
-<form action="{{ route('mail.store') }}" method="POST" enctype="multipart/form-data">
-@csrf
-
-<div class="modal-content">
-<div class="modal-header"><h5>إضافة الجواب</h5></div>
-<div class="modal-body">
-
-<div class="form-group"><label>العنوان</label><input type="text" name="title" id="add_title" class="form-control" required></div>
-<div class="form-group"><label>الوصف</label><textarea name="description" id="add_description" class="form-control"></textarea></div>
-
-<div class="form-group"><label>الجهه المصدره</label>
-<select name="entity_id" id="add_entity_id" class="form-control">
-@foreach($entities ?? [] as $rel)
-<option value="{{ $rel->id }}">{{ $rel->name }}</option>
-@endforeach
-</select>
-</div>
-
-
-
-<label>الجواب</label>
-<input type="file" name="file" class="filepond" >
-</div>
-<div class="modal-footer"><button type="submit" class="btn btn-primary">حفظ</button></div>
-</div>
-</form>
-</div>
-</div>
-
-<div class="modal fade" id="editModal" tabindex="-1">
-<div class="modal-dialog">
-<form id="editForm" action="{{route('mail.update')}}" method="POST">
-@csrf @method('PUT')
-<input type="hidden" name="id" id="edit_id">
-<div class="modal-content">
-<div class="modal-header"><h5>تعديل الجواب</h5></div>
-<div class="modal-body">
-
-<div class="form-group"><label>العنوان</label><input type="text" name="title" id="edit_title" class="form-control" required></div>
-<div class="form-group"><label>الوصف</label><textarea name="description" id="edit_description" class="form-control"></textarea></div>
-
-<div class="form-group"><label>الجهه</label>
-<select name="entity_id" id="edit_entity_id" class="form-control">
-@foreach($entities ?? [] as $rel)
-<option value="{{ $rel->id }}">{{ $rel->name }}</option>
-@endforeach
-</select>
-</div>
-
-
-</div>
-<div class="modal-footer"><button type="submit" class="btn btn-success">تحديث</button></div>
-</div>
-</form>
-</div>
-</div>
-
-
-
-<div class="modal fade" id="shareModal" tabindex="-1">
-<div class="modal-dialog">
-<form id="shareForm" action="{{route('mail.share')}}" method="POST">
-@csrf @method('PUT')
-<input type="hidden" name="id" id="share_id">
-<div class="modal-content">
-<div class="modal-header"><h5>نشر الجواب</h5></div>
-<div class="modal-body">
-
-<div class="form-group"><label>الاداره</label>
-<select name="departments[]" id="share_department" multiple="multiple" class="mySelectMultiple">
-@foreach($departments ?? [] as $rel)
-<option value="{{ $rel->id }}">{{ $rel->name }}</option>
-@endforeach
-</select>
-</div>
-
-
-  <div class="form-group"><label>الخصوصيه</label>
-<select name="privacy" id="share_privacy" class="form-control">
-@foreach($privacies ?? [] as $rel)
-<option value="{{ $rel->id }}">{{ $rel->name }}</option>
-@endforeach
-</select>
-  </div>
-
-
-
-<div class="form-group d-flex flex-column">
-<div class="form-control d-flex justify-center align-items-center " style="outline:none; border:none;">
-<label style="padding-left:10px; margin-bottom:2px;" >تعطيل التتبع</label>
-<input type='checkbox'  name="tracing">
-</div>
-
-
-
-
-</div>
-</div>
-<div class="modal-footer"><button type="submit" class="btn btn-success">تحديث</button></div>
-</div>
-</form>
-</div>
-</div>
-
-
-
-
-
 
 <div class="row">
 <div class="col-12">
@@ -130,9 +20,8 @@
 <div class="card-header bg-white d-flex justify-content-between align-items-center">
 <h4 class="mb-0">إدارة الجوابات</h4>
 <div class="bulkActions">
-<button class="btn btn-primary add-btn" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> إضافة</button>
 <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
-<button class="btn btn-warning text-white archive-all-btn" id="bulkArchive"><i class="fa fa-archive"></i> أرشفة المحدد</button>
+<button class="btn btn-warning restore-all-btn" id="bulkDelete"><i class="fa fa-rotate-left"></i>  أرجاع المحدد</button>
 </div>
 </div>
 <div class="card-body">
@@ -161,24 +50,9 @@
 <td>{{ $item->entity->name ?? 'N/A' }}</td>
 <td>{{ $item->sign ?? 'غير موقع' }}</td>
 <td>
-<button class="btn btn-sm btn-purple shareBtn"
-data-toggle="modal"
-data-target="#shareModal"
-data-id="{{ $item->id }}">
-<i class="fa fa-share"></i>
-</button>
-<a class="btn btn-sm btn-secondary signBtn" href="{{ route('mail.sign', $item->id) }}"><i class="fa fa-signature"></i></a>
 <a class="btn btn-sm btn-success viewBtn" href="{{ route('mail.preview', $item->id) }}"><i class="fa fa-eye"></i></a>
-<button class="btn btn-sm btn-info editBtn"
-data-toggle="modal"
-data-target="#editModal"
-data-id="{{ $item->id }}"
-data-edit_title="{{ $item->title }}"
-data-edit_description="{{ $item->description }}"
-data-edit_entity_id="{{ $item->entity->id }}">
-<i class="fa fa-edit"></i></button>
-<button class="btn btn-sm btn-warning text-white archiveBtn" data-id="{{ $item->id }}"><i class="fa fa-archive"></i></button>
 <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
+<a href="{{route('mail.restore', $item->id)}}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
 </td>
 </tr>
 @empty
@@ -218,34 +92,6 @@ confirmButtonText: 'حسناً'
 });
 </script>
 @endif
-
-<script>
-$('.editBtn').on('click',function(){
-let edit_title=  $(this).data('edit_title');
-let edit_description =  $(this).data('edit_description');
-let edit_department_id =  $(this).data('edit_department_id');
-let edit_entity_id =  $(this).data('edit_entity_id');
-let id =  $(this).data('id');
-$('#editModal').on('shown.bs.modal', function () {
-$('#edit_title').val(edit_title);
-$('#edit_description').val(edit_description);
-$('#edit_department_id').val(edit_department_id);
-$('#edit_entity_id').val(edit_entity_id);
-$('#edit_id').val(id);
-});
-})
-</script>
-
-<script>
-$('.shareBtn').on('click',function(){
-let id =  $(this).data('id');
-$('#shareModal').on('shown.bs.modal', function () {
-$('#share_id').val(id);
-});
-})
-</script>
-
-
 
 <script>
 document.querySelectorAll('.deleteBtn').forEach(function(btn) {
@@ -338,26 +184,26 @@ form.action = `{{ route('mail.destroy.all') }}`;
 form.submit();
 }
 });
-} else if(btn.classList.contains('archive-all-btn')) {
-Swal.fire({
-title: 'هل متأكد من عمليه الارشفه',
-text: "سوف يتم ارشفه العنصر",
-icon: 'warning',
-showCancelButton: true,
-confirmButtonColor: '#d33',
-cancelButtonColor: '#3085d6',
-confirmButtonText: 'نعم',
-cancelButtonText: 'رجوع'
-}).then((result) => {
-if (result.isConfirmed) {
-let form = document.getElementById('selectedGroub');
-form.action = `{{ route('mail.archive.all') }}`;
-form.submit();
-}
-});
-}
-});
-});
+     } else if(btn.classList.contains('restore-all-btn')) {
+        Swal.fire({
+          title: 'هل متأكد من عمليه الارجاع',
+          text: "سوف يتم ارجاع العنصر",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'نعم',
+          cancelButtonText: 'رجوع'
+        }).then((result) => {
+          if (result.isConfirmed) {
+             let form = document.getElementById('selectedGroub');
+			 form.action = `{{ route('mail.restore.all') }}`;
+			 form.submit();
+        }
+        });
+      }
+    });
+  });
 </script>
 
 <script>
@@ -381,7 +227,7 @@ $('#result').show();
 $('#index').hide();
 
 $.ajax({
-url: '/mail/search',
+url: '/mail/search/archive',
 type: 'post',
 data: { search: search },
 success: function(data) {
@@ -392,7 +238,7 @@ if (!data || data.length === 0) {
 html = `<tr><td colspan="20"><p class="no-data">لا توجد نتائج للبحث</p></td></tr>`;
 } else {
 $.each(data, function(i, item) {
-let signUrl = '/mail/sign/'+item.id;
+let restoreUrl = '/mail/restore/'+item.id;
 let previewUrl = '/mail/preview/'+item.id;
 html += `
 <tr id="row-${item.id}">
@@ -401,27 +247,11 @@ html += `
 <td>${item.description}</td>
 <td>${item.status?.name ?? 'N/A'}</td>
 <td>${item.entity?.name ?? 'N/A'}</td>
-<td>${item.user?.name ?? 'غير موقع'}</td>
+<td>${item.sign ?? 'غير موقع'}</td>
 <td>
-<button class="btn btn-sm btn-purple shareBtn"
-data-toggle="modal"
-data-target="#shareModal"
-data-id="${item.id}">
-<i class="fa fa-share"></i>
-</button>
-<a class="btn btn-sm btn-secondary signBtn" href="${signUrl}"><i class="fa fa-signature"></i></a>
 <a class="btn btn-sm btn-success viewBtn" href="${previewUrl}"><i class="fa fa-eye"></i></a>
-    <button class="btn btn-sm btn-info editBtn"
-            data-toggle="modal"
-            data-target="#editModal"
-            data-id="${item.id}"
-            data-edit_title="${item.title}"
-            data-edit_description="${item.description}"
-            data-edit_entity_id="${item.entity.id}">
-        <i class="fa fa-edit"></i>
-    </button>
-<button class="btn btn-sm btn-warning text-white archiveBtn" data-id="${item.id}"><i class="fa fa-archive"></i></button>
 <button class="btn btn-sm btn-danger deleteBtn" data-id="${item.id}"><i class="fa fa-trash"></i></button>
+<a href="${restoreUrl}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
 </td>
 </tr>`;
 });
@@ -431,5 +261,4 @@ $('#result').html(html);
 });
 });
 });
-</script>
-@endsection
+</script>@endsection

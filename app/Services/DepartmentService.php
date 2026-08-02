@@ -16,10 +16,8 @@ class DepartmentService extends BaseService
 
     public function index(){return CacheService::getCache('departments', $this->model);}
 
-    public function archiveIndex(){return $this->model->onlyTrashed()->get();}
-
     public function import($request) {return $this->fileService->importExcel($request, $this->importClass,);}
 
-    public function search($search){$columns = ['name','code']; return $this->model->search($search,$columns);}
+    public function search($search, $archive){$columns = ['name','code']; return $this->model->search($archive,$search,$columns);}
 }
 

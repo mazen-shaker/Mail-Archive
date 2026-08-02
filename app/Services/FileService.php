@@ -13,6 +13,6 @@ use App\Models\User;
 
    public function prosessFile($data,$model){$file = $data->file('file'); $path = $file->store('uploads', 'public'); $data = $data->toArray(); $data['file_path'] = $path; $data['user_id'] = Auth::id(); return $model->create($data);}
 
-   public function previewFile($id,$model){$file = $model->find($id); return response()->file(storage_path('app/public/' . $file->file_path),['Content-Type' => Storage::mimeType($file->file_path), 'Content-Disposition' => 'inline; filename="'.$file->file_name.'"',]);}
+   public function previewFile($id,$model){$file = $model->withTrashed()->find($id); return response()->file(storage_path('app/public/' . $file->file_path),['Content-Type' => Storage::mimeType($file->file_path), 'Content-Disposition' => 'inline; filename="'.$file->file_name.'"',]);}
 
 }

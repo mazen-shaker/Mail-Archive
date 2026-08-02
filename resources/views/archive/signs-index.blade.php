@@ -7,51 +7,12 @@
 <h4 class="content-title mb-0 my-auto">التوقيعات</h4>
 </div>
 </div>
-</div>  
+</div>
 @endsection
 @section('content')
-<form action="" method="post" id="selectedGroub">   
+<form action="" method="post" id="selectedGroub">
 @csrf
 </form>
-
-<div class="modal fade" id="addModal" tabindex="-1">
-<div class="modal-dialog">
-<form action="{{ route('sign.store') }}" method="POST" enctype="multipart/form-data">
-@csrf
-
-<div class="modal-content">
-<div class="modal-header"><h5>إضافة توقيع</h5></div>
-<div class="modal-body">
-
-<div class="form-group"><label>اسم التوقيع</label><input type="text" name="name" id="add_name" class="form-control" required></div>
-
-
-<label>الجواب</label>
-<input type="file" name="file" class="filepond" >
-</div>     
-<div class="modal-footer"><button type="submit" class="btn btn-primary">حفظ</button></div>
-</div>
-</form>
-</div>
-</div>
-
-<div class="modal fade" id="editModal" tabindex="-1">
-<div class="modal-dialog">
-<form id="editForm" action="{{route('sign.update')}}" method="POST">
-@csrf @method('PUT')
-<input type="hidden" name="id" id="edit_id">
-<div class="modal-content">
-<div class="modal-header"><h5>تعديل توقيع</h5></div>
-<div class="modal-body">
-
-<div class="form-group"><label>اسم التوقيع</label><input type="text" name="name" id="edit_name" class="form-control" required></div>
-
-</div>
-<div class="modal-footer"><button type="submit" class="btn btn-success">تحديث</button></div>
-</div>
-</form>
-</div>
-</div>
 
 <div class="row">
 <div class="col-12">
@@ -59,11 +20,10 @@
 <div class="card-header bg-white d-flex justify-content-between align-items-center">
 <h4 class="mb-0">إدارة التوقيعات</h4>
 <div class="bulkActions">
-<button class="btn btn-primary add-btn" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> إضافة</button>
 <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
-<button class="btn btn-warning text-white archive-all-btn" id="bulkArchive"><i class="fa fa-archive"></i> أرشفة المحدد</button>
+<button class="btn btn-warning restore-all-btn" id="bulkDelete"><i class="fa fa-rotate-left"></i>  أرجاع المحدد</button>
 </div>
-</div>   
+</div>
 <div class="card-body">
 <input type="text" id="searchInput" class="form-control mb-3" placeholder="بحث سريع عن التوقيعات...">
 <div class="table-responsive">
@@ -82,15 +42,9 @@
 <td><input type='checkbox' class="selectItem" name="ids[]" form="selectedGroub" value='{{ $item->id }}'></td>
 <td>{{ $item->name }}</td>
 <td>
-<a class="btn btn-sm btn-success viewBtn" href="{{ route('sign.preview', $item->id) }}"><i class="fa fa-eye"></i></a>
-<button class="btn btn-sm btn-info editBtn"
-data-toggle="modal"
-data-target="#editModal"
-data-id="{{ $item->id }}"
-data-name="{{ $item->name }}">
-<i class="fa fa-edit"></i></button>
-<button class="btn btn-sm btn-warning text-white archiveBtn" data-id="{{ $item->id }}"><i class="fa fa-archive"></i></button>
-<button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
+    <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
+    <a href="{{route('sign.restore', $item->id)}}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
+
 </td>
 </tr>
 @empty
@@ -102,10 +56,10 @@ data-name="{{ $item->name }}">
 </table>
 </div>
 </div>
-</div>  
 </div>
 </div>
-</div>  
+</div>
+</div>
 </div>
 </div>
 
@@ -140,15 +94,15 @@ $('#edit_name').val(edit_name);
 $('#edit_id').val(id);
 });
 })
-</script>     
+</script>
 
 
 
 
 <script>
-$(document).on('click', '.deleteBtn', function(e) {
+document.querySelectorAll('.deleteBtn').forEach(function(btn) {
 btn.addEventListener('click', function(e) {
-e.preventDefault(); 
+e.preventDefault();
 let id = btn.dataset.id;
 Swal.fire({
 title: 'هل متأكد من عمليه الحذف؟',
@@ -169,9 +123,9 @@ window.location.href = "/sign/destroy/"+id;
 </script>
 
 <script>
-$(document).on('click', '.archiveBtn', function(e) {
+document.querySelectorAll('.restoreBtn').forEach(function(btn) {
 btn.addEventListener('click', function(e) {
-e.preventDefault(); 
+e.preventDefault();
 let id = btn.dataset.id;
 Swal.fire({
 title: 'هل متأكد من عمليه الارشفه',
@@ -184,7 +138,7 @@ confirmButtonText: 'نعم',
 cancelButtonText: 'رجوع'
 }).then((result) => {
 if (result.isConfirmed) {
-window.location.href = "/sign/archive/"+id;
+window.location.href = "/sign/restore/"+id;
 }
 });
 });
@@ -206,7 +160,7 @@ e.preventDefault();
 
 if (btn.classList.contains('add-btn')) {
 return;
-}  
+}
 
 const anyChecked = Array.from(itemCheckboxes).some(cb => cb.checked);
 
@@ -236,10 +190,10 @@ form.action = `{{ route('sign.destroy.all') }}`;
 form.submit();
 }
 });
-} else if(btn.classList.contains('archive-all-btn')) {
+} else if(btn.classList.contains('restore-all-btn')) {
 Swal.fire({
-title: 'هل متأكد من عمليه الارشفه',
-text: "سوف يتم ارشفه العنصر",
+title: 'هل متأكد من عمليه الحذف؟',
+text: "سوف يتم حذف العنصر نهائياً",
 icon: 'warning',
 showCancelButton: true,
 confirmButtonColor: '#d33',
@@ -249,11 +203,11 @@ cancelButtonText: 'رجوع'
 }).then((result) => {
 if (result.isConfirmed) {
 let form = document.getElementById('selectedGroub');
-form.action = `{{ route('sign.archive.all') }}`;
+form.action = `{{ route('sign.restore.all') }}`;
 form.submit();
 }
 });
-}  
+}
 });
 });
 </script>
@@ -279,31 +233,26 @@ $('#result').show();
 $('#index').hide();
 
 $.ajax({
-url: '/sign/search',
+url: '/sign/search/archived',
 type: 'post',
 data: { search: search },
 success: function(data) {
 let html = '';
 if (!data || data.length === 0) {
 html = `<tr><td colspan="20"><p class="no-data">لا توجد نتائج للبحث</p></td></tr>`;
-} else {   
+} else {
 $.each(data, function(i, item) {
 let previewUrl = '/sign/preview/'+item.id;
+let restoreUrl = '/sign/restore/'+item.id;
 html += `
 <tr id="row-${item.id}">
 <td><input type='checkbox' class="selectItem" name="ids[]" value='${item.id}'></td>
-<td>${item.name}</td>  
+<td>${item.name}</td>
 <td>${item.user?.name ?? ''}</td>
 <td>
 <a class="btn btn-sm btn-success viewBtn" href="${previewUrl}"><i class="fa fa-eye"></i></a>
-<button class="btn btn-sm btn-info editBtn"
-data-toggle="modal"
-data-target="#editModal"
-data-id="${item.id}"
-data-name="${item.name}">
-<i class="fa fa-edit"></i></button>
-<button class="btn btn-sm btn-warning text-white archiveBtn" data-id="${item.id}"><i class="fa fa-archive"></i></button>
 <button class="btn btn-sm btn-danger deleteBtn" data-id="${item.id}"><i class="fa fa-trash"></i></button>
+<a href="${restoreUrl}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
 </td>
 </tr>`;
 });

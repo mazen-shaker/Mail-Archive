@@ -401,7 +401,7 @@ html += `
 <td>${item.description}</td>
 <td>${item.status?.name ?? 'N/A'}</td>
 <td>${item.entity?.name ?? 'N/A'}</td>
-<td>${item.user?.name ?? 'غير موقع'}</td>
+<td>${item.sign ?? 'غير موقع'}</td>
 <td>
 <button class="btn btn-sm btn-purple shareBtn"
 data-toggle="modal"
