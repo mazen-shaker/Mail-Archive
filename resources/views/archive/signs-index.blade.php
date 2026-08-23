@@ -55,6 +55,9 @@
 <tbody id="result"></tbody>
 </table>
 </div>
+<div class="pag-div">
+{{ $signs->links('pagination::bootstrap-5') }}
+</div>
 </div>
 </div>
 </div>

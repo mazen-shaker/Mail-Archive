@@ -26,7 +26,7 @@
 <div class="form-group"><label>الوصف</label><textarea name="description" id="add_description" class="form-control"></textarea></div>
 
 <div class="form-group"><label>الجهه المصدره</label>
-<select name="entity_id" id="add_entity_id" class="form-control">
+<select name="entity_id" id="add_entity_id" class="form-control mySelect">
 @foreach($entities ?? [] as $rel)
 <option value="{{ $rel->id }}">{{ $rel->name }}</option>
 @endforeach
@@ -57,7 +57,7 @@
 <div class="form-group"><label>الوصف</label><textarea name="description" id="edit_description" class="form-control"></textarea></div>
 
 <div class="form-group"><label>الجهه</label>
-<select name="entity_id" id="edit_entity_id" class="form-control">
+<select name="entity_id" id="edit_entity_id" class="form-control mySelect">
 @foreach($entities ?? [] as $rel)
 <option value="{{ $rel->id }}">{{ $rel->name }}</option>
 @endforeach
@@ -189,9 +189,12 @@ data-edit_entity_id="{{ $item->entity->id }}">
 <tbody id="result"></tbody>
 </table>
 </div>
-</div>
-</div>
-</div>
+    <div class="pag-div">
+      {{ $mails->links('pagination::bootstrap-5') }}
+    </div>
+    </div>
+    </div>
+    </div>
 </div>
 </div>
 </div>

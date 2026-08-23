@@ -63,6 +63,9 @@
 <tbody id="result"></tbody>
 </table>
 </div>
+<div class="pag-div">
+{{ $mails->links('pagination::bootstrap-5') }}
+</div>
 </div>
 </div>
 </div>

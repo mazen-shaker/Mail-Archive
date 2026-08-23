@@ -9,7 +9,7 @@ $(document).ready(function() {
 		placeholder: 'Choose one',
 		 width: '100%'
 	});
-	
+
 	function formatState (state) {
 	  if (!state.id) { return state.text; }
 	  var $state = $(
@@ -25,5 +25,5 @@ $(document).ready(function() {
 	  templateSelection: formatState,
 	   escapeMarkup: function(m) { return m; }
 	});
-	
+
 });

@@ -7,6 +7,7 @@ use App\Http\Controllers\SignController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
@@ -28,6 +29,7 @@ Route::delete('/notification/destroy/{id}', [RegisteredUserController::class, 'd
 
 Route::get('/mail/index', [MailController::class, 'index'])->name('mail.index');
 Route::post('/mail/store', [MailController::class, 'store'])->name('mail.store');
+Route::post('/mail/export', [MailController::class, 'export'])->name('mail.export');
 Route::put('/mail/update', [MailController::class, 'update'])->name('mail.update');
 Route::get('/mail/destroy/{id}', [MailController::class, 'destroy'])->name('mail.destroy');
 Route::get('/mail/archive/{id}', [MailController::class, 'archive'])->name('mail.archive');
@@ -107,6 +109,18 @@ Route::get('/user/archive/{id}', [RegisteredUserController::class, 'archive'])->
 Route::post('/user/destroy/all', [RegisteredUserController::class, 'destroyAll'])->name('user.destroy.all');
 Route::post('/user/archive/all', [RegisteredUserController::class, 'archiveAll'])->name('user.archive.all');
 Route::post('/user/search', [RegisteredUserController::class, 'search'])->name('user.search');
+
+
+Route::get('/backup/pack', [BackupController::class, 'pack'])->name('backup.pack');
+Route::get('/backup/sittings', [BackupController::class, 'sittings'])->name('backup.sittings');
+Route::get('/backup/index', [BackupController::class, 'index'])->name('backup.index');
+Route::post('/backup/store', [BackupController::class, 'store'])->name('backup.store');
+Route::put('/backup/update', [BackupController::class, 'update'])->name('backup.update');
+Route::get('/backup/destroy/{id}', [BackupController::class, 'destroy'])->name('backup.destroy');
+Route::get('/backup/archive/{id}', [BackupController::class, 'archive'])->name('backup.archive');
+Route::post('/backup/destroy/all', [BackupController::class, 'destroyAll'])->name('backup.destroy.all');
+Route::post('/backup/archive/all', [BackupController::class, 'archiveAll'])->name('backup.archive.all');
+Route::post('/backup/search', [BackupController::class, 'search'])->name('backup.search');
 });
 });
 

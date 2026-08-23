@@ -11,18 +11,22 @@ use App\Models\Sign;
 use App\Models\MailDepartment;
 use App\Services\FileService;
 use App\Services\MailLowService;
-
+use App\Exports\MailsExport as Export;
 
 class MailService extends BaseService
 {
     protected $model;
     protected $fileService;
     protected $lowService;
+    protected $export;
 
-    public function __construct(Mail $model, FileService $fileService, MailLowService $lowService){$this->model = $model;$this->fileService = $fileService; $this->lowService = $lowService;}
+    public function __construct(Mail $model, FileService $fileService, MailLowService $lowService, Export $export){$this->model = $model;$this->fileService = $fileService; $this->lowService = $lowService; $this->export = $export;}
 
 
     public function index(){ return $this->lowService->index($this->model);}
+
+
+    public function export($ids){ return $this->export->export($ids);}
 
 
     public function reportIndex(){ return $this->lowService->reportIndex($this->model);}
@@ -32,7 +36,6 @@ class MailService extends BaseService
 
 
     public function preViewFile($id){return $this->fileService->preViewFile($id, $this->model);}
-
 
 
     public function share($id, $data){$this->lowService->share($this->model,$id,$data);}

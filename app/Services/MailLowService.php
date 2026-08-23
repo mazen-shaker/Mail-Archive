@@ -28,7 +28,7 @@ class MailLowService
     public function index($model){$mails = $model->paginate(10); $privacies = CacheService::getCache('privacies', MailPrivacy::class);
     $entities = Entity::all(); $departments = Department::all(); return ['mails' => $mails,'privacies' => $privacies,'entities' => $entities,'departments' => $departments];}
 
-    public function reportIndex($model){$mails = $model->get(); $archivedCount = $model::onlyTrashed()->count();
+    public function reportIndex($model){$mails = $model->paginate(10); $archivedCount = $model::onlyTrashed()->count();
     $resultCount = $mails->count(); $sharedCount = $mails->where('mail_status_id', MailStatusEnum::PUBLISHED->value)->count(); $entities = Entity::all();
     $departments = Department::all(); $mailStatus = CacheService::getCache('mailStatus', MailStatus::class);return ['mails' => $mails,'statuses' => $mailStatus,'entities' => $entities,'departments' => $departments, 'resultCount'=>$resultCount, 'sharedCount'=>$sharedCount, 'archivedCount'=>$archivedCount,];}
 

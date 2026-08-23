@@ -51,7 +51,10 @@
 					</tbody>
                     </table>
                 </div>
-            </div>
+    <div class="pag-div">
+      {{ $entities->links('pagination::bootstrap-5') }}
+    </div>
+    </div>
         </div>
     </div>
 </div>

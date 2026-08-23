@@ -16,6 +16,7 @@
         "predis/predis": "^3.4",
         "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
+        "spatie/laravel-backup": "^10.3",
         "spatie/laravel-permission": "^7.3"
     },
     "require-dev": {

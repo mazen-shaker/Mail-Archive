@@ -23,6 +23,12 @@ Description    :   Custom styles for data tables, buttons, and search inputs.
 -----------------------------------------------------------------*/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
+.pag-div nav{
+height:200px !important;
+display:flex;
+justify-content:end !important;
+justify-items:end !important;
+}
 
 
 .btn-purple {

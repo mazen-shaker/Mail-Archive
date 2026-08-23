@@ -7,22 +7,23 @@
 							<h4 class="content-title mb-0 my-auto">الجهات</h4>
 						</div>
 					</div>
-				</div>  
+				</div>
 				<!-- breadcrumb -->
- 
+
 @endsection
+
 @section('content')
 <form action="" method="post" id="selectedGroub">
 	@csrf
 </form>
-<div id="toastContainer"></div>      
+<div id="toastContainer"></div>
 <!-- Add Modal -->
 <div class="modal fade" id="importModal" tabindex="-1">
     <div class="modal-dialog">
           <form action="{{route('entity.import')}}" method="post" enctype="multipart/form-data">
 			@csrf
 
-	
+
             <div class="modal-content">
                 <div class="modal-header"><h5>استيراد بيانات EXL</h5></div>
                 <div class="modal-body">
@@ -80,7 +81,7 @@
 
 
 
-   
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -92,7 +93,7 @@
                     <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
                     <button class="btn btn-warning text-white archive-all-btn" id="bulkArchive"><i class="fa fa-archive"></i> أرشفة المحدد</button>
                 </div>
-            </div>   
+            </div>
             <div class="card-body">
                 <input type="text" id="searchInput" class="form-control mb-3" placeholder="بحث سريع عن الجهات...">
                 <div class="table-responsive">
@@ -101,7 +102,7 @@
                         <tbody id="index">
                             @forelse ($entities as $item)
                                 <tr id="row-{{ $item->id }}">
-                                    
+
                                     <td><input type='checkbox' class="selectItem" name="ids[]" form="selectedGroub" value='{{ $item->id }}'></td><td>{{ $item->name }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-info editBtn" data-toggle="modal" data-target="#editModal" data-id="{{ $item->id }}" data-name="{{ $item->name }}"><i class="fa fa-edit"></i></button>
@@ -113,15 +114,18 @@
                                 <tr><td colspan="20"><p class="no-data">لا توجد بيانات للعرض</p></td></tr>
                             @endforelse
                         </tbody>
-                    <tbody id="result">  
+                    <tbody id="result">
 					</tbody>
-                    </table>
+                  </table>
                 </div>
-            </div>
-        </div>  
+    <div class="pag-div">
+      {{ $entities->links('pagination::bootstrap-5') }}
+    </div>
+    </div>
+    </div>
     </div>
 </div>
-</div>  
+</div>
 </div>
 </div>
 
@@ -163,7 +167,7 @@
   checkAll.addEventListener('change', function() {
     itemCheckboxes.forEach(cb => cb.checked = this.checked);
   });
-     
+
   // التعامل مع الأزرار
   allBtns.forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -173,7 +177,7 @@
       if (btn.classList.contains('add-btn')) {
         console.log('زرار الإضافة اشتغل');
         return;
-      }  
+      }
 
       // التأكد من وجود تشيكبوكس متعلم
       const anyChecked = Array.from(itemCheckboxes).some(cb => cb.checked);
@@ -222,7 +226,7 @@
 			 form.submit();
         }
         });
-      }  
+      }
     });
   });
 </script>
@@ -238,7 +242,7 @@ $(document).ready(function() {
 
     $('#searchInput').on('keyup', function() {
         let search = $(this).val();
-        
+
         if (search == '') {
             $('#result').hide();
             $('#index').show();
@@ -284,10 +288,10 @@ $(document).ready(function() {
 $(document).on('click', '.editBtn', function() {
     let name = $(this).data('name');
     let id = $(this).data('id');
-    
+
     $('#edit_name').val(name);
     $('#edit_id').val(id);
-    $('#editModal').modal('show'); 
+    $('#editModal').modal('show');
 });
 </script>
 
@@ -295,7 +299,7 @@ $(document).on('click', '.editBtn', function() {
 $(document).on('click', '.deleteBtn', function(e) {
     e.preventDefault();
     let id = $(this).data('id'); // جلب الـ id من الزر الذي ضُغط فعلياً
-    
+
     Swal.fire({
         title: 'هل متأكد من عمليه الحذف؟',
         text: "سوف يتم حذف العنصر نهائياً",
@@ -318,7 +322,7 @@ $(document).on('click', '.deleteBtn', function(e) {
 $(document).on('click', '.archiveBtn', function(e) {
     e.preventDefault();
     let id = $(this).data('id');
-    
+
     Swal.fire({
         title: 'هل متأكد من عمليه الارشفه',
         text: "سوف يتم ارشفه العنصر",

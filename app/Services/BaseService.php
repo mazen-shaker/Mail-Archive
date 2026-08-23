@@ -8,7 +8,7 @@ class BaseService
 
     public function index(){return $this->model->paginate(10);}
 
-    public function archiveIndex(){return $this->model->onlyTrashed()->get();}
+    public function archiveIndex(){return $this->model->onlyTrashed()->paginate(10);}
 
     public function store($data){return $this->model->create($data);}
 

@@ -83,6 +83,14 @@
 							<li><a class="slide-item" href="{{ route('sign.trashed') }}">التوقيعات</a></li>
 						</ul>
 					</li>
+					@can('view-users')
+						<li class="slide">
+						<a class="side-menu__item" href="{{ route('backup.sittings') }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="side-menu__icon" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none" /><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.25 14c0.89 3.45 4.02 6 7.75 6c4.42 0 8 -3.58 8 -8c0 -4.42 -3.58 -8 -8 -8c-2.39 0 -4.53 1.05 -6 2.71l-2 2.29" /><g fill="currentColor"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M5.63 7.38l-2.13 -2.13l0 4.25l4.25 0Z" /><circle cx="12" cy="12" r="2" /></g></svg>
+							<span class="side-menu__label">النسخ الأحتياطية</span></a>
+					</li>
+					@endcan
+
 
 
 					</ul>

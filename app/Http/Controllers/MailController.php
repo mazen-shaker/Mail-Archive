@@ -30,6 +30,9 @@ class MailController extends Controller
     public function reportIndex(){$data = $this->service->reportIndex();  return view('mails.report', $data);}
 
 
+    public function export(Request $request){ $this->service->export($request->ids);  return redirect()->back();}
+
+
     public function archiveIndex() {$mails = $this->service->archiveIndex(); return view('archive.mails-index', compact('mails'));}
 
 

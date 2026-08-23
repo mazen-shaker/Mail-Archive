@@ -7,9 +7,9 @@
 							<h4 class="content-title mb-0 my-auto">التوقيعات</h4>
 						</div>
 					</div>
-				</div>  
+				</div>
 				<!-- breadcrumb -->
- 
+
 @endsection
 @section('content')
 <form action="" method="post" id="selectedGroub">
@@ -55,11 +55,11 @@
                         @foreach($roles ?? [] as $rel)
                             <option value="{{ $rel->id }}">{{ $rel->name ?? $rel->title }}</option>
                         @endforeach
-                    </select>      
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>الاداره</label>
-                    <select name="department_id" id="add_department_id" class="form-control" required>
+                    <select name="department_id" id="add_department_id" class="form-control mySelect" required>
                         @foreach($departments ?? [] as $rel)
                             <option value="{{ $rel->id }}">{{ $rel->name ?? $rel->title }}</option>
                         @endforeach
@@ -106,7 +106,7 @@
                 </div>
                 <div class="form-group">
                     <label>الاداره</label>
-                    <select name="department_id" id="edit_department_id" class="form-control" required>
+                    <select name="department_id" id="edit_department_id" class="form-control mySelect" required>
                         @foreach($departments ?? [] as $rel)
                             <option value="{{ $rel->id }}">{{ $rel->name ?? $rel->title }}</option>
                         @endforeach
@@ -148,7 +148,7 @@
                         <tbody id="index">
                             @forelse ($users as $item)
                                 <tr id="row-{{ $item->id }}">
-                                    
+
                                     <td><input type='checkbox' class="selectItem" name="ids[]" form="selectedGroub" value='{{ $item->id }}'></td><td>{{ $item->name }}</td><td>{{ $item->email }}</td><td>{{ $item->role->name ?? 'N/A' }}</td><td>{{ $item->department->name ?? 'N/A' }}</td><td>{{ $item->status->name ?? 'N/A' }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-info editBtn" data-toggle="modal" data-target="#editModal" data-id="{{ $item->id }}" data-name="{{ $item->name }}" data-email="{{ $item->email }}" data-phone="{{ $item->phone }}" data-role_id="{{ $item->role_id }}" data-department_id="{{ $item->department_id }}" data-user_status_id="{{ $item->user_status_id }}"><i class="fa fa-edit"></i></button>
@@ -165,10 +165,10 @@
                     </table>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
 </div>
-</div>  
+</div>
 </div>
 </div>
 
@@ -232,7 +232,7 @@ $('#edit_id').val(id);
 <script>
 $(document).on('click', '.deleteBtn', function(e) {
     btn.addEventListener('click', function(e) {
-      e.preventDefault(); 
+      e.preventDefault();
 	  let id = btn.dataset.id;
       console.log(id);
       Swal.fire({
@@ -257,7 +257,7 @@ $(document).on('click', '.deleteBtn', function(e) {
 <script>
 $(document).on('click', '.archiveBtn', function(e) {
     btn.addEventListener('click', function(e) {
-      e.preventDefault(); 
+      e.preventDefault();
 	  let id = btn.dataset.id;
       console.log(id);
       Swal.fire({
@@ -292,7 +292,7 @@ $(document).on('click', '.archiveBtn', function(e) {
   checkAll.addEventListener('change', function() {
     itemCheckboxes.forEach(cb => cb.checked = this.checked);
   });
-     
+
   // التعامل مع الأزرار
   allBtns.forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -302,7 +302,7 @@ $(document).on('click', '.archiveBtn', function(e) {
       if (btn.classList.contains('add-btn')) {
         console.log('زرار الإضافة اشتغل');
         return;
-      }  
+      }
 
       // التأكد من وجود تشيكبوكس متعلم
       const anyChecked = Array.from(itemCheckboxes).some(cb => cb.checked);
@@ -351,7 +351,7 @@ $(document).on('click', '.archiveBtn', function(e) {
 			 form.submit();
         }
         });
-      }  
+      }
     });
   });
 </script>
@@ -367,7 +367,7 @@ $(document).ready(function() {
 
     $('#searchInput').on('keyup', function() {
         let search = $(this).val();
-        
+
         if (search == '') {
             $('#result').hide();
             $('#index').show();
@@ -381,7 +381,7 @@ $(document).ready(function() {
             url: '/user/search',
             type: 'post',
             data: { search: search },
-            success: function(data) {  
+            success: function(data) {
                 let html = '';
                 if (!data || data.length === 0) {
                     html = `<tr><td colspan="20"><p class="no-data">لا توجد نتائج للبحث</p></td></tr>`;
@@ -397,14 +397,14 @@ $(document).ready(function() {
                                 <td>${item.department ? item.department.name : 'N/A'}</td>
                                 <td>${item.status ? item.status.name : 'N/A'}</td>
                                 <td>
-                                    <button class="btn btn-sm btn-info editBtn" 
-                                        data-toggle="modal" 
-                                        data-target="#editModal" 
-                                        data-id="${item.id}" 
-                                        data-name="${item.name}" 
-                                        data-email="${item.email}" 
-                                        data-role_id="${item.role_id}" 
-                                        data-department_id="${item.department_id}" 
+                                    <button class="btn btn-sm btn-info editBtn"
+                                        data-toggle="modal"
+                                        data-target="#editModal"
+                                        data-id="${item.id}"
+                                        data-name="${item.name}"
+                                        data-email="${item.email}"
+                                        data-role_id="${item.role_id}"
+                                        data-department_id="${item.department_id}"
                                         data-user_status_id="${item.user_status_id}">
                                         <i class="fa fa-edit"></i>
                                     </button>

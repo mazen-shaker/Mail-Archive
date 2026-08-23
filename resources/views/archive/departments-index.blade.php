@@ -49,7 +49,11 @@
 					</tbody>
                     </table>
                 </div>
-            </div>
+     <div class="pag-div">
+      {{ $departments->links('pagination::bootstrap-5') }}
+    </div>
+
+    </div>
         </div>
     </div>
 </div>
