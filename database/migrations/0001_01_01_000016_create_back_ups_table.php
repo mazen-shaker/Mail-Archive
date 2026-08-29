@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('file_path');
+            $table->softDeletes();
             $table->boolean('saved')->default(false);
             $table->timestamps();
         });

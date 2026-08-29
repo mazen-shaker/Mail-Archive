@@ -21,6 +21,7 @@ class BackupService extends BaseService
         $this->packService = $packService;
     }
 
+    public function index(){return $this->model->withTrashed()->paginate(10);}
 
     public function pack(){
     return $this->packService->create();

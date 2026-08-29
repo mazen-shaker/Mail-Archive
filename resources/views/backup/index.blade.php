@@ -4,14 +4,13 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">الجهات</h4>
+							<h4 class="content-title mb-0 my-auto">النسخ الاحتياطية</h4>
 						</div>
 					</div>
 				</div>
 				<!-- breadcrumb -->
 
 @endsection
-
 @section('content')
 <form action="" method="post" id="selectedGroub">
 	@csrf
@@ -21,11 +20,11 @@
 <!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
-        <form id="editForm" action="{{route('entity.update')}}" method="POST">
+        <form id="editForm" action="{{route('backup.update')}}" method="POST">
             @csrf @method('PUT')
             <input type="hidden" name="id" id="edit_id">
             <div class="modal-content">
-                <div class="modal-header"><h5>تعديل الجه</h5></div>
+                <div class="modal-header"><h5>تعديل النسخة الاحتياطية</h5></div>
                 <div class="modal-body">
                 <div class="form-group">
                     <label>الاسم</label>
@@ -45,27 +44,32 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">إدارة الجهات</h4>
+                <h4 class="mb-0">إدارة النسخ الاحتياطية</h4>
                 <div class="bulkActions">
                     <button class="btn btn-danger del-all-btn" id="bulkDelete"><i class="fa fa-trash"></i> حذف المحدد</button>
-                    <button class="btn btn-warning text-white archive-all-btn" id="bulkArchive"><i class="fa fa-archive"></i> أرشفة المحدد</button>
+                    <button class="btn btn-warning text-white save-all-btn" id="bulkSave"><i class="fa fa-bookmark"></i> حفظ المحدد</button>
+                    <button class="btn btn-warning text-white desave-all-btn" id="bulkDesave">أزاله المحدد من الحفظ</button>
                 </div>
             </div>
             <div class="card-body">
-                <input type="text" id="searchInput" class="form-control mb-3" placeholder="بحث سريع عن الجهات...">
+                <input type="text" id="searchInput" class="form-control mb-3" placeholder="بحث سريع عن النسخ الاحتياطية...">
                 <div class="table-responsive">
-                    <table class="table table-hover text-center" id="entityTable">
+                    <table class="table table-hover text-center" id="backupTable">
                         <thead class="thead-light"><tr><th><input type='checkbox' id='selectAll' style="margin-top:10px;"></th><th>الاسم</th><th>العمليات</th></tr></thead>
                         <tbody id="index">
                             @forelse ($backups as $item)
                                 <tr id="row-{{ $item->id }}">
-
                                     <td><input type='checkbox' class="selectItem" name="ids[]" form="selectedGroub" value='{{ $item->id }}'></td>
                                     <td>{{ $item->name }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-info editBtn" data-toggle="modal" data-target="#editModal" data-id="{{ $item->id }}" data-name="{{ $item->name }}"><i class="fa fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-warning text-white archiveBtn" data-id="{{ $item->id }}"><i class="fa fa-archive"></i></button>
+                                        @if(!$item->deleted_at)
+                                        <a class="btn btn-sm btn-warning text-white saveBtn" href="{{route("backup.save", $item->id)}}"><i class="fa fa-bookmark"></i></a>
+                                        @else
+                                        <a class="btn btn-sm btn-warning text-white desaveBtn" href="{{route("backup.desave", $item->id)}}">ازاله من الحفظ</a>
+                                        @endif
                                         <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
+                                        <a href="{{route('entity.restore', $item->id)}}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
                                     </td>
                                 </tr>
                             @empty
@@ -77,7 +81,7 @@
                   </table>
                 </div>
     <div class="pag-div">
-      {{ $entities->links('pagination::bootstrap-5') }}
+      {{ $backups->links('pagination::bootstrap-5') }}
     </div>
     </div>
     </div>
@@ -143,7 +147,7 @@
       if (!anyChecked) {
         Swal.fire({
           icon: 'info',
-          title: 'اختار عنصر الأول',
+          title: 'اختار نسخة احتياطية الأول',
           confirmButtonText: 'حسنا'
         });
         return;
@@ -153,7 +157,7 @@
       if (btn.classList.contains('del-all-btn')) {
         Swal.fire({
           title: 'هل متأكد من عمليه الحذف؟',
-          text: "سوف يتم حذف العنصر نهائياً",
+          text: "سوف يتم حذف النسخ الاحتياطية نهائياً",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d33',
@@ -163,27 +167,18 @@
         }).then((result) => {
           if (result.isConfirmed) {
              let form = document.getElementById('selectedGroub');
-			 form.action = `{{ route('entity.destroy.all') }}`;
+			 form.action = `{{ route('backup.destroy.all') }}`;
 			 form.submit();
         }
         });
-      } else if(btn.classList.contains('archive-all-btn')) {
-        Swal.fire({
-          title: 'هل متأكد من عمليه الارشفه',
-          text: "سوف يتم ارشفه العنصر",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'نعم',
-          cancelButtonText: 'رجوع'
-        }).then((result) => {
-          if (result.isConfirmed) {
+      }else if (btn.classList.contains('save-all-btn')) {
              let form = document.getElementById('selectedGroub');
-			 form.action = `{{ route('entity.archive.all') }}`;
+			 form.action = `{{ route('backup.save.all') }}`;
 			 form.submit();
-        }
-        });
+      }else if (btn.classList.contains('desave-all-btn')) {
+             let form = document.getElementById('selectedGroub');
+			 form.action = `{{ route('backup.desave.all') }}`;
+			 form.submit();
       }
     });
   });
@@ -211,7 +206,7 @@ $(document).ready(function() {
         $('#index').hide();
 
         $.ajax({
-            url: '/entity/search',
+            url: '/backup/search',
             type: 'post',
             data: { search: search },
             success: function(data) {
@@ -220,20 +215,21 @@ $(document).ready(function() {
                     html = `<tr><td colspan="20"><p class="no-data">لا توجد نتائج للبحث</p></td></tr>`;
                 } else {
                     $.each(data, function(i, item) {
-                        // تصليح الأخطاء هنا: item بدلاً من tem و استخدام النقطة بدلاً من السهم
+                    let saveUrl = '/backup/save/'+item.id;
+                    let saveUrl = '/backup/desave/'+item.id;
                         html += `
                             <tr id="row-${item.id}">
                                 <td><input type='checkbox' class="selectItem" name="ids[]" value='${item.id}'></td>
                                 <td>${item.name}</td>
                                     <td>
                                         <button class="btn btn-sm btn-info editBtn" data-toggle="modal" data-target="#editModal" data-id="${item.id}" data-name="${item.name}"><i class="fa fa-edit"></i></button>
-                                        <button class="btn btn-sm btn-warning text-white archiveBtn" data-id="${item.id}"><i class="fa fa-archive"></i></button>
+                                        ${item.deleted_at === null ? `<a class="btn btn-sm btn-warning text-white saveBtn" href="${saveUrl}"><i class="fa fa-bookmark"></i></a>` : `<a class="btn btn-sm btn-warning text-white desaveBtn" href="${desaveUrl}">أزاله الحفظ</a>`}
                                         <button class="btn btn-sm btn-danger deleteBtn" data-id="${item.id}"><i class="fa fa-trash"></i></button>
                                     </td>
                             </tr>`;
                     });
                 }
-                $('#result').html(html);
+            $('#result').html(html);
             },
             error: function(err) {
                 console.error("خطأ في جلب البيانات:", err);
@@ -260,7 +256,7 @@ $(document).on('click', '.deleteBtn', function(e) {
 
     Swal.fire({
         title: 'هل متأكد من عمليه الحذف؟',
-        text: "سوف يتم حذف العنصر نهائياً",
+        text: "سوف يتم حذف النسخة الاحتياطية نهائياً",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -269,30 +265,7 @@ $(document).on('click', '.deleteBtn', function(e) {
         cancelButtonText: 'رجوع'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = "/entity/destroy/" + id;
-        }
-    });
-});
-</script>
-
-
-<script>
-$(document).on('click', '.archiveBtn', function(e) {
-    e.preventDefault();
-    let id = $(this).data('id');
-
-    Swal.fire({
-        title: 'هل متأكد من عمليه الارشفه',
-        text: "سوف يتم ارشفه العنصر",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'نعم',
-        cancelButtonText: 'رجوع'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "/entity/archive/" + id;
+            window.location.href = "/backup/destroy/" + id;
         }
     });
 });

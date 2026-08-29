@@ -115,11 +115,13 @@ Route::get('/backup/pack', [BackupController::class, 'pack'])->name('backup.pack
 Route::get('/backup/sittings', [BackupController::class, 'sittings'])->name('backup.sittings');
 Route::get('/backup/index', [BackupController::class, 'index'])->name('backup.index');
 Route::post('/backup/store', [BackupController::class, 'store'])->name('backup.store');
-Route::put('/backup/update', [BackupController::class, 'update'])->name('backup.update');
+Route::PUT('/backup/update', [BackupController::class, 'update'])->name('backup.update');
 Route::get('/backup/destroy/{id}', [BackupController::class, 'destroy'])->name('backup.destroy');
-Route::get('/backup/archive/{id}', [BackupController::class, 'archive'])->name('backup.archive');
+Route::get('/backup/save/{id}', [BackupController::class, 'save'])->name('backup.save');
+Route::get('/backup/desave/{id}', [BackupController::class, 'desave'])->name('backup.desave');
+Route::post('/backup/desave/all', [BackupController::class, 'desaveAll'])->name('backup.desave.all');
+Route::post('/backup/save/all', [BackupController::class, 'saveAll'])->name('backup.save.all');
 Route::post('/backup/destroy/all', [BackupController::class, 'destroyAll'])->name('backup.destroy.all');
-Route::post('/backup/archive/all', [BackupController::class, 'archiveAll'])->name('backup.archive.all');
 Route::post('/backup/search', [BackupController::class, 'search'])->name('backup.search');
 });
 });

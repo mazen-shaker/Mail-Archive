@@ -12,18 +12,25 @@ class UpdateBackUpRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
+
     public function rules(): array
     {
+
         return [
-            //
+            'name' => 'required|string|unique:entities',
+            'id' => 'required',
         ];
     }
-}
+
+    public function messages(): array
+    {
+        return [
+        'name.required' => 'يجب ملأ حقل الاسم ',
+        'name.string' => 'الاسم جب ان يكون نص',
+        'name.unique' => 'الاسم موجود بالفعل',
+        'id.required' => 'الطلب يحمل مشاكل امنيه'
+        ];
+    }}

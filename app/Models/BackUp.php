@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Searchable;
 
 class BackUp extends Model
 {
@@ -14,5 +16,5 @@ protected $fillable = [
    'saved',
 ];
 
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 }
