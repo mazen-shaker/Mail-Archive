@@ -231,11 +231,10 @@ $('#edit_id').val(id);
 
 <script>
 $(document).on('click', '.deleteBtn', function(e) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-	  let id = btn.dataset.id;
-      console.log(id);
-      Swal.fire({
+    e.preventDefault();
+    let id = $(this).data('id'); // جلب الـ id من الزر الذي ضُغط فعلياً
+
+    Swal.fire({
         title: 'هل متأكد من عمليه الحذف؟',
         text: "سوف يتم حذف العنصر نهائياً",
         icon: 'warning',
@@ -244,23 +243,21 @@ $(document).on('click', '.deleteBtn', function(e) {
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'نعم',
         cancelButtonText: 'رجوع'
-      }).then((result) => {
-            if (result.isConfirmed) {
-             window.location.href = "/user/destroy/"+id;
-            }
-        });
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/user/destroy/" + id;
+        }
     });
-  });
+});
 </script>
 
 
 <script>
 $(document).on('click', '.archiveBtn', function(e) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-	  let id = btn.dataset.id;
-      console.log(id);
-      Swal.fire({
+    e.preventDefault();
+    let id = $(this).data('id');
+
+    Swal.fire({
         title: 'هل متأكد من عمليه الارشفه',
         text: "سوف يتم ارشفه العنصر",
         icon: 'warning',
@@ -269,16 +266,13 @@ $(document).on('click', '.archiveBtn', function(e) {
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'نعم',
         cancelButtonText: 'رجوع'
-      }).then((result) => {
-            if (result.isConfirmed) {
-             window.location.href = "/user/archive/"+id;
-            }
-        });
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/user/archive/" + id;
+        }
     });
-  });
+});
 </script>
-
-
 
 
 

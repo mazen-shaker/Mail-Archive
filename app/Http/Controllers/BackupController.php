@@ -39,6 +39,6 @@ public function saveAll(){$this->service->archiveMultiple($this->request->ids); 
 
 public function desaveAll(){$this->service->restoreMultiple($this->request->ids); return redirect()->back();}
 
-public function restore($id) {$this->service->restore($id); return redirect()->back();}
+public function restore($id) {$this->service->packrestore($id); return redirect()->back();}
 
 public function search($archive = null){$results = $this->service->search($this->request->search, $archive); return response()->json($results);}}

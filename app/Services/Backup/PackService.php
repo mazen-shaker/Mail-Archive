@@ -10,55 +10,61 @@ use Spatie\Backup\Events\BackupWasSuccessful;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
 
 class PackService
 {
-    public function create(): Backup
-    {
-        $createdBackup = null;
+public function create(): Backup
+{
+    $createdBackup = null;
+    $filename = now()->format('Y-m-d-H-i');
 
-        $listener = function (BackupWasSuccessful $event) use (&$createdBackup): void {
-            $createdBackup = $event;
-        };
+    $listener = function (BackupWasSuccessful $event) use (&$createdBackup): void {
+        $createdBackup = $event;
+    };
 
-        Event::listen(BackupWasSuccessful::class, $listener);
+    Event::listen(BackupWasSuccessful::class, $listener);
 
-        try {
-            return DB::transaction(function () use (&$createdBackup) {
-                $exitCode = Artisan::call('backup:run');
+    try {
+        return DB::transaction(function () use (&$createdBackup, $filename) {
+            $exitCode = Artisan::call('backup:run', [
+                '--filename' => $filename . '.zip',
+            ]);
 
-                if ($exitCode !== 0) {
-                    throw new RuntimeException(
-                        'Backup command failed: ' . Artisan::output()
-                    );
-                }
-
-                if (!$createdBackup) {
-                    throw new RuntimeException(
-                        'Backup command completed, but no successful backup event was received.'
-                    );
-                }
-
-                $backup = BackUp::create([
-                    'name' => $createdBackup->backupName,
-                    'file_path' => $this->resolveBackupPath($createdBackup),
-                ]);
-
-                Auth::user()->notify(
-                    new BackUpCompleteNotification()
+            if ($exitCode !== 0) {
+                throw new RuntimeException(
+                    'Backup command failed: ' . Artisan::output()
                 );
+            }
 
-                return $backup;
-            });
+            if (!$createdBackup) {
+                throw new RuntimeException(
+                    'Backup command completed, but no successful backup event was received.'
+                );
+            }
 
-        } finally {
-            Event::forget(
-                BackupWasSuccessful::class,
-                $listener
-            );
-        }
+            $backup = BackUp::create([
+                'name' => $filename,
+                'file_path' => $this->resolveBackupPath($createdBackup),
+            ]);
+
+Notification::send(
+    Auth::user(),
+    new BackUpCompleteNotification()
+);
+
+
+            return $backup;
+        });
+
+    } finally {
+        Event::forget(
+            BackupWasSuccessful::class,
+            $listener
+        );
     }
-
+}
     private function resolveBackupPath(BackupWasSuccessful $event): string
     {
         $disk = $event->diskName;

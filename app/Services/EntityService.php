@@ -18,6 +18,6 @@ class EntityService extends BaseService
 
     public function import($request) {return $this->fileService->importExcel($request, $this->importClass,);}
 
-    public function search($search, $archive){$columns = ['name']; return $this->model->search($archive,$search,$columns);}
+    public function search($search, $archive){ $columns = ['name']; return $this->model->search($archive,$search,$columns);}
 
 }

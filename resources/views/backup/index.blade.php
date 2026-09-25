@@ -69,7 +69,7 @@
                                         <a class="btn btn-sm btn-warning text-white desaveBtn" href="{{route("backup.desave", $item->id)}}">ازاله من الحفظ</a>
                                         @endif
                                         <button class="btn btn-sm btn-danger deleteBtn" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
-                                        <a href="{{route('entity.restore', $item->id)}}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
+                                        <a href="{{route('backup.restore', $item->id)}}" class="btn btn-sm btn-warning restorBtn"><i class="fa fa-rotate-left"></i></a>
                                     </td>
                                 </tr>
                             @empty
@@ -216,7 +216,7 @@ $(document).ready(function() {
                 } else {
                     $.each(data, function(i, item) {
                     let saveUrl = '/backup/save/'+item.id;
-                    let saveUrl = '/backup/desave/'+item.id;
+                    let desaveUrl = '/backup/desave/'+item.id;
                         html += `
                             <tr id="row-${item.id}">
                                 <td><input type='checkbox' class="selectItem" name="ids[]" value='${item.id}'></td>

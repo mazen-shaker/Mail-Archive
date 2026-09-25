@@ -19,6 +19,8 @@ class EntityController extends Controller
 
     public function index(){$entities = $this->service->index(); return view('entities.index', compact('entities'));}
 
+    public function archiveIndex() {$entities = $this->service->archiveIndex(); return view('archive.entities-index', compact('entities'));}
+
     public function store(StoreEntityRequest $request){$this->service->store($request->validated()); return redirect()->route('entity.index');}
 
     public function update(UpdateEntityRequest $request){$this->service->update($request->id, $request->validated()); return redirect()->route('entity.index');}
@@ -33,5 +35,5 @@ class EntityController extends Controller
 
     public function import() {$this->service->import($this->request); return redirect()->route('entity.index');}
 
-    public function search(){$results = $this->service->search($this->request->search); return response()->json($results);}
+    public function search($archive = null){ $results = $this->service->search($this->request->search,$archive); return response()->json($results);}
 }
