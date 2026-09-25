@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateEntityRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Notifications\ImportPendingNotification;
+
 class EntityController extends Controller
 {
     protected $service;

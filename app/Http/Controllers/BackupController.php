@@ -23,8 +23,6 @@ public function sittings(){ return view('backup.sittings');}
 
 public function pack(){ $this->service->pack(); return redirect()->back();}
 
-public function archiveIndex() {$backups = $this->service->archiveIndex(); return view('archive.backups-index', compact('backups'));}
-
 public function desave($id) {$this->service->restore($id); return redirect()->back();}
 
 public function store(StoreBackUpRequest $request){$this->service->store($request->validated()); return redirect()->back();}
@@ -41,6 +39,6 @@ public function saveAll(){$this->service->archiveMultiple($this->request->ids); 
 
 public function desaveAll(){$this->service->restoreMultiple($this->request->ids); return redirect()->back();}
 
-public function import() {$this->service->import($this->request); return redirect()->back();}
+public function restore($id) {$this->service->restore($id); return redirect()->back();}
 
 public function search($archive = null){$results = $this->service->search($this->request->search, $archive); return response()->json($results);}}

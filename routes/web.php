@@ -121,6 +121,7 @@ Route::get('/backup/save/{id}', [BackupController::class, 'save'])->name('backup
 Route::get('/backup/desave/{id}', [BackupController::class, 'desave'])->name('backup.desave');
 Route::post('/backup/desave/all', [BackupController::class, 'desaveAll'])->name('backup.desave.all');
 Route::post('/backup/save/all', [BackupController::class, 'saveAll'])->name('backup.save.all');
+Route::post('/backup/restore', [BackupController::class, 'restore'])->name('backup.restore');
 Route::post('/backup/destroy/all', [BackupController::class, 'destroyAll'])->name('backup.destroy.all');
 Route::post('/backup/search', [BackupController::class, 'search'])->name('backup.search');
 });
