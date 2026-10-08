@@ -41,6 +41,11 @@ This workflow reduces unnecessary physical document movement and provides a cent
 
 ![Archive Mail Backup Management](public/assets/screenshots/backup-page.png)
 
+### Reports 
+
+![Archive Mail Reports](public/assets/screenshots/reports.png)
+
+
 ## Features
 
 ### Correspondence Management
